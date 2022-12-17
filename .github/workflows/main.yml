@@ -5,12 +5,12 @@ jobs:
   install-pnpm:
     runs-on: ubuntu-latest
     steps:
-      - name: init
+      - name: 初始化node环境
         uses: actions/setup-node@v3
         with:
           node-version: '16'
       - run: npm install -g pnpm
       - run: pnpm -v
-      - name: build
+      - name: 打包文档
         uses: actions/checkout@v3
-      - run: pnpm -v
+      - run: pnpm build-webdoc
