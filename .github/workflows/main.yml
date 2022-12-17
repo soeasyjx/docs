@@ -1,0 +1,12 @@
+name: 自动打包文档
+run-name: ${{ github.actor }} is learning GitHub Actions
+on: [push]
+jobs:
+  install-pnpm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      - run: npm install -g pnpm
+      - run: pnpm -v
