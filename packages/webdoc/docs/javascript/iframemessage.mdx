@@ -1,0 +1,171 @@
+---
+id: iframemessage
+title: iframe 如何跟父窗口互相通信
+displayed_sidebar: baseSidebar
+---
+
+## 前言
+
+这个问题大伙应该都能回答，起原是因为公司有一个 h5 PDF 文档的解析服务，在主页面通过嵌入`iframe` 来引入这个服务解析 PDF 达到，良好的阅读效果。
+
+## iframe 特性
+
+`iframe` 最大的特性就是提供了浏览器原生的<u>硬隔离方案</u>，不论是<u>样式隔离</u>、<u>js 隔离</u>这类问题统统都能被完美解决。但他的最大问题也在于他的**隔离性无法被突破**，导致应用间上下文无法被共享，随之带来的开发体验、产品体验的问题。
+
+### 问题
+
+:::note
+
+1. url 不同步。浏览器刷新 iframe url 状态丢失、后退前进按钮无法使用。
+
+2. UI 不同步，DOM 结构不共享。想象一下屏幕右下角 1/4 的 `iframe`里来一个带遮罩层的弹框，同时我们要求这个弹框要浏览器居中显示，还要浏览器 resize 时自动居中..
+
+3. 全局上下文完全隔离，内存变量不共享。`iframe` 内外系统的通信、数据同步等需求，主应用的 cookie 要透传到根域名都不同的子应用中实现免登效果。
+
+4. 慢。每次子应用进入都是一次浏览器上下文重建、资源重新加载的过程。
+
+5. 页面上的每个`<iframe>`都需要增加内存和其它计算资源，这是因为每个浏览上下文都拥有完整的文档环境。虽然理论上来说你能够在代码中写出来无限多的`<iframe>`，但是你最好还是先看看这么做会不会导致某些性能问题。另外 iframe 的资源加载会阻塞主页面的资源加载
+
+6. `iframe` 受浏览器同源策略限制
+
+**其实这也是很多微前端框架不使用 `iframe` 的原因了**
+:::
+
+说了这么多，但其实 iframe 也有很多便利性，就比如我们项目里使用到的 PDF 文档解析服务，由于我们 h5 前端只是纯展示，并不需要跟 iframe 进行互相通信，故这里使用 iframe 是最好的方案了
+
+## PDF 服务
+
+我们公司的 PDF 服务说白了就是一个 html 页面，使用者通过传递约定好的查询参数?file=test.pdf 给服务，服务会解析渲染出 PDF 文档，比纯原生打开 PDF 文档的效果要好，支持放大缩小等功能
+
+使用的是 `pdf.js`这个第三方库，[传送门](https://github.com/mozilla/pdf.js)
+
+### PDF 服务地址
+
+```
+// 伪地址
+https://xxxxx.xx.xx/index.html?file=${encodeURIComponent(pdfurl)}
+```
+
+:::tip
+为了方便演示这里我就简单的新建了一个 H5 主页面(可以理解成一个容器)，和一个伪 PDF 服务页面
+:::
+
+## 父页面
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+<Tabs>
+<TabItem value="html" label="Html">
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <iframe id="myiframe" src="子页面URL"></iframe>
+</body>
+</html>
+```
+
+</TabItem>
+<TabItem value="js" label="JavaScript">
+
+```js
+window.addEventListener("message", (e) => {
+  console.log("接收 iframe 消息：", e);
+});
+```
+
+</TabItem>
+</Tabs>
+
+## 子页面
+
+:::tip
+子页面，其实就是一个开启的了服务的 Html 页面，至于怎么去开启一个服务方法有很多，比如 vscode 安装 `Live Server` 插件，[传送门](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)，或者直接使用`http-server`，[传送门](https://www.npmjs.com/package/http-server)，总之怎么方便怎么来，因为我主要是想让大伙了解一下 `postMessage()` ,因此不必真的去搞一个 PDF 文档放到服务器上
+:::
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>这是子页面--负责发送信息 postmessage</title>
+    <style>
+      #span {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="iframediv">
+      test pagepage
+      <span id="span">abc</span>
+    </div>
+  </body>
+  <script>
+    var NANANAN = 12321;
+    (function () {
+      // 3s后发送消息到主窗体
+      setTimeout(function () {
+        window.parent.postMessage({
+          test: "jinagxinnjjjj"
+        });
+        console.log("消息发送完成");
+      }, 3000);
+    })();
+  </script>
+</html>
+```
+
+:::note
+postMessage 可进行跨域通信，除非指定了`targetOrigin`
+
+message：需要发送的消息可以发送任何数据，例如 `json` 对象等
+
+targetOrigin：通过窗口的 `origin` 属性来指定哪些窗口能接收到消息事件，其值可以是字符串"\*"（表示无限制）或者一个 URI。在发送消息的时候，如果目标窗口的协议、主机地址或端口这三者的任意一项不匹配 `targetOrigin` 提供的值，那么消息就不会被发送；只有三者完全匹配，消息才会被发送。这个机制用来控制消息可以发送到哪些窗口
+:::
+
+## 修改 iframe 内容标签样式
+
+```js
+document.querySelector('#myiframe').contentWindow?.document.querySelector(’#span’).style.color=’yellow’
+```
+
+:::tip
+这里有一个需要注意的地方，如果父子页面<u>非同源</u>，通过 `contentWindow` 是<u>无法获取到</u> `iframe` 里面的<u>dom</u>
+:::
+
+<h2>总结</h2>
+子页面通过 postMessage API 可以安全的将消息发送到父页面
+
+父页面通过注册 message 事件可以进行消息的接收
+
+### [message](https://developer.mozilla.org/en-US/docs/Web/API/Window/message_event)
+
+接收来自别一个窗口的消息，或者说监听来自另一个窗口发送的消息，如 `window.postMessage()` 发送的消息
+
+#### 语法
+
+```js
+addEventListener("message", (event) => {});
+```
+
+### [postMessage](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/postMessage)
+
+`window.Message()`方法可以安全地实现跨源通信。通常，对于两个不同页面的脚本，只有当执行它们的页面位于具有相同的协议（通常为 `https`），端口号（`443` 为 `https` 的默认值），以及主机 (两个页面的模数 Document.domain设置为相同的值) 时，这两个脚本才能相互通信。`window.postMessage()` 方法提供了一种受控机制来规避此限制，只要正确的使用，这种方法就很安全。
+
+#### 语法
+
+```js
+otherWindow.postMessage(message, targetOrigin, [transfer]);
+```
+

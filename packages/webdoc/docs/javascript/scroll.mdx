@@ -1,0 +1,60 @@
+---
+id: scroll
+title: 页面刷新后不定位到之前的滚动位置？
+displayed_sidebar: baseSidebar
+---
+
+import Thumbnail from "@site/src/components/Thumbnail";
+
+## 前言
+
+有一天产品突然找到我，说”哥，我们手动刷新页面后，页面能不能不滚动到刷新之前的位置”，这。。。。。”当然可以” 这还不简单 element.scrollTop=0 完事，收工，3 秒钟
+。。。。。做为一个有追求的程序员，怎么能这么就草草完事，听我细细到来，看看还有啥搞头
+
+## 浏览器默认行为
+
+无论是哪个浏览器，都有这样一个体验细节。
+
+那就是，如果浏览器不是强制刷新`Ctrl + F5`，而是普通刷新（点击刷新按钮，或者按下 `F5` 刷新），则页面重新载入完毕后大概率会调到之前访问的位置。
+
+<Thumbnail
+  src="/myimage/scroll1.gif"
+  alt="Choose either AWS or GCP"
+  width="556px"
+/>
+
+大多数时候，这种体验对用户是友好的。
+但是，实际开发中，我们总会存在不希望用户刷新记住之前滚动位置的情况。
+
+### <del>解决方案</del>
+
+曾几何时，我是在页面 `load` 完毕之后，在足够安全的时间之后设置页面的 `scrollTop=0`。
+然而，这个方法实在是太不优雅了！
+
+**最近才知道，原来浏览器已经提供了原生的 `API`，可以轻松实现浏览器滚动后每次都回到顶部的能力！**
+
+## history.scrollRestoration
+
+使用很简单，在页面的任意位置执行下面几行 JS 代码就可以了：
+
+```js
+if (history.scrollRestoration) {
+  history.scrollRestoration = "manual";
+}
+```
+**over!!**
+
+## 语法和兼容性
+`history.scrollRestoration` 支持下面两个属性值：
+
+**auto** 默认值，表示滚动位置会被存储。<br/>
+**manual** 单词的意思就是手动。表示，滚动的位置不会被存储。
+
+### 兼容性
+
+兼容性很不错，现代浏览器很早就支持了，移动端放心使用。
+<Thumbnail
+  src="/myimage/scroll2.png"
+  alt="Choose either AWS or GCP"
+  width="556px"
+/>

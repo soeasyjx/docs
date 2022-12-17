@@ -1,0 +1,208 @@
+---
+id: cache
+title: 浏览器缓存
+displayed_sidebar: baseSidebar
+---
+
+import Thumbnail from '@site/src/components/Thumbnail';
+
+## 前言
+作为前端开发，缓存是整天接触的概念，工作中也频繁接触到，本文就深入的讲解一下浏览器缓存的工作机制和原理。这篇文章概念的东西比较多，请大伙不要睡着了。。。
+
+## 为什么要有缓存
+
+网页中的代码和资源都是从服务器下载的，如果服务器和用户的浏览器离得比较远，那下载过程会比较耗时，页面打开也会比较慢。下次再访问相同页面，又要重新再下载一次，如果资源没有啥变动的话，再次一重新下载相同的资源就变得很没必要了。所以，`HTTP` 设计了缓存的功能和策略，可以把下载的资源保存起来，再次打开的时候直接读取缓存。用来增加页面打开速度减少不必要的网络请求。
+
+而且，每个请求都要服务端做相应的处理，比如解析`URL`,读取文件，返回响应等，而服务器能同时处理的请求是有上限的。
+
+综上，为了提高网页打开的速度，降低服务器的负担，`HTTP` 设计了缓存的功能
+
+## 缓存过程分析
+
+**浏览器对于缓存的处理都是根据第一次请求资源时返回的响应头（缓存规则）来确定的**
+
+<Thumbnail
+  src='/myimage/cache.png'
+  alt='Choose either AWS or GCP'
+  width='556px'
+/>
+
+## 缓存位置
+
+主要分为四种，且具有自上而下的优先级，当依次查找缓存且没有命中时，才会去请求网络。
+
+- Service Worker
+- Memory Cache
+- Disk Cache
+- Push Cache
+
+### Service Worker
+
+是独立运行在浏览器背后的独立子线程，因为 `Service Worker` 涉及到请求拦截，因此必须使用 `HTTPS` 协议来保障安全。`Service Worker` 的缓存和浏览器其他内建的缓存机制不同，它可以让我们自由控制缓存哪些文件、如何匹配缓存、如何读取缓存，可编程自主性更灵活。一般存储在 `Cache Storage` 中。
+
+### Memory Cache
+
+“内存中的缓存”。主要针对的是当前页面中已经抓取到的资源（如页面上已经下载的 CSS 样式、JS 脚本、图片等）。读取 `Memory Cache` 中的缓存要比 `Disk Cache` 中的缓存快，虽然读取很效率，但是缓存持续性很短，会随着进程的释放而释放（即一旦我们关闭浏览器 Tab 选项卡，“内存中的缓存”也就释放了，APP 并不存在这种缓存）。
+
+内存缓存中有一块非常重要的缓存资源是 `preloader` 相关指令（如  ）下载的资源，这将是 app 下阶段的页面优化手段，它标记了该资源的下载顺序权重为最低，被标记为 prefetch 的资源，将会在浏览器空闲时进行加载。 [https://zhuanlan.zhihu.com/p/48521680](https://zhuanlan.zhihu.com/p/48521680)
+
+需要注意的是，内存缓存在缓存资源时并不关心返回资源的 `HTTP` 缓存头 `Cache-Control` 设置了什么。
+
+### Disk Cache
+
+是存储在硬盘中的缓存，相比 `Memory Cache` 具有容量和存储时效性上的优势。在所有的浏览器中该缓存覆盖面是最大的。
+
+### Push Cache
+
+Push Cache（推送缓存）是 `HTTP/2` 中的内容，当以上三种缓存都没有命中时，它才会被使用。由于国内并不普及，这里就不涉及过多介绍。
+如果以上四个缓存都没有命中，才会发起网络请求。
+
+为了性能考虑，制定有利的缓存策略是非常重要的手段，通常浏览器缓存策略分为两种：强缓存和协商缓存，且缓存策略都是通过设置 `HTTP Header` 头来实现的。
+
+## 强缓存
+
+不会向服务器发起请求，直接从缓存中读取资源。这类请求会返回 **200** 状态码，且 size 显示为 from disk cache 或 from memory cache。强缓存是通过设置 HTTP Header 来实现的：分别是 Expires 和 Cache-Control 。
+
+### Expires
+
+指定资源过期时间，在这个时间之后不去请求服务器，直接从缓存中取资源
+
+```
+Expires: Web,21 Oct 2021 07:28/;00 GMT
+```
+
+`HTTP1.0`产物，但是受限于本地时间，如果修改了本地时间会造成缓存失效，因此目前已经废弃。
+
+### Cache-Control
+
+`HTTP1.1`产物，是最重要的缓存规则，主要控制网页缓存（如当 `Cache-Control=max-age=300`时，该请求在 5 分钟内加载资源，都将命中强缓存）
+
+`Cache-Control` 可设置在请求头和响应头中，可组合出多种缓存策略组合：
+
+| 指令                     |                                                       作用 |                                                                                                                        说明                                                                                                                         |
+| ------------------------ | ---------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| public                   |                       表示响应可以被客户端和代理服务器缓存 |                                  响应可被任何中间节点缓存，如 `Browser <-- proxy1 <-- proxy2 <-- Server`，中间的 proxy 可以缓存资源，比如下次再请求同一资源 proxy1 直接把自己缓存的东西给 Browser 而不再向 proxy2 要                                  |
+| private                  |                                 表示响应只可以被客户端缓存 | Cache-Control 的默认取值。表示中间节点不允许缓存，对于 `Browser <-- proxy1 <-- proxy2 <-- Server`，proxy 会老老实实把 Server 返回的数据发送给 proxy1,自己不缓存任何数据。当下次 Browser 再次请求时 proxy 会做好请求转发而不是自作主张给自己缓存的数据 |
+| no-cache                 | 不使用强缓存，使用协商缓存来验证，后面会详细介绍“协商缓存” |                                                      表示不使用 Cache-Control 来做前置验证，而是使用 Etag 或 Last-Modified 来控制缓存。浏览器在使用缓存时，需要向服务器先确认一下资源是否一致                                                       |
+| no-store                 |                                       所有内容都不会被缓存 |                                                                                                        表示不使用强制缓存，也不使用协商缓存                                                                                                         |
+| max-age=xxx（单位：秒）  |                          缓存 xxx 秒后就过期，需要重新请求 |                                                                                                            表示缓存内容将在 xxx 秒后失效                                                                                                            |
+| s-maxage=xxx（单位：秒） |               覆盖 max-age，作用一样，只在代理服务器中生效 |              同 max-age 作用一样，只在代理服务器中生效（比如 CDN 缓存）。比如当 s-maxage=60 时，在这 60 秒内，即使更新了 CDN 的内容，浏览器也不会进行请求。max-age 用于普通缓存，s-maxage 用于代理缓存。s-maxage 优先级高于 max-age。               |
+| must-revalidate          |                                            must-revalidate |                                                                                            浏览器方面无实质作用，在 chrome 上可用于关闭“启发式缓存方式”                                                                                             |
+
+### Expires 和 Cache-Control 两者的对比
+首先两者的区别不是很大，一个是`HTTP1.0`的产物，一个则是`HTTP1.1`的产物。两者可以同时存在，如果同时存在则 `Cache-Control` 优先级高于 `Expires`；例如在某些不支持`HTTP1.1`的环境下，`Expires` 就能发挥起作用。所以 `Expires` 其实是一个过时的产物，现阶段它的存在只是一种兼容性写法。
+强缓存实际作用：判断缓存的依据来自于是否超出某个时间段，而不关心服务端文件是否已经更新。 那我们应该如何获取服务端上的资源是否发生更新？此时我们可以使用“协商缓存”策略。
+
+## 协商缓存
+协商缓存是当强缓存失效后，浏览器将会携带 缓存标识 向服务器发起请求，由服务器根据缓存标识来决定是否使用缓存的过程，主要包含了以下两种情况（生效/失效情况）：
+
+### 协商缓存生效，返回 304 和 Not Modified。
+
+<Thumbnail
+  src='/myimage/cache1.png'
+  alt='Choose either AWS or GCP'
+  width='556px'
+/>
+
+### 协商缓存失效，返回 200 和请求结果。
+<Thumbnail
+  src='/myimage/cache2.png'
+  alt='Choose either AWS or GCP'
+  width='556px'
+/>
+
+:::info
+协商缓存也是通过设置两种 HTTP Header 头来实现的：它们分别是 `Last-Modified` 和 `ETag`。 
+:::
+
+## Last-Modified 和 If-Modified-Since
+浏览器在**第一次**访问某资源时，服务器在返回该资源的同时，会在 `response Header` 头上添加 `Last-Modified` 的属性头，该值便是该资源在服务器上最后被修改的时间，浏览器接受后缓存文件结果和该 `Header` 头信息。
+
+```
+Last-Modified: Sat, 21 Nov 2020 01:39:20 GMT
+```
+浏览器下一次请求该资源时，浏览器检测到浏览器缓存中有 `Last-Modified` 的头信息，于是将生成 `If-Modified-Since=Sat, 21 Nov 2020 01:39:20 GMT` 请求服务器；服务器再次接受到该资源请求时，会根据 `If-Modified-Since` 中的值与服务器上该资源的最后修改时间做对比，如果没有变化则返回 **304** 和空的响应体，浏览器便直接从浏览器缓存中获取该资源结果；如果 `If-Modified-Since` 的时间小于服务器上该资源的最后修改时间，说明资源发生了变化，于是服务器便返回 **200** 和该资源结果给浏览器。
+
+### Last-Modified的缺点
+  - 如果本地打开缓存文件，即使没有对该文件进行修改，也会造成 Last-Modified 发生变化；
+  - Last-Modified 的设计是以秒为单位的，如果资源变化发生在1秒内，则服务器会认为资源并没有发生变化，从而导致返回错误的资源结果；
+
+:::info
+根据以上不足，HTTP1.1又提出了 `ETag` 和 `If-None-Match` 解决方案。
+:::
+
+## ETag 和 If-None-Match
+处理过程同上，只是一个是根据修改时间，一个是根据内容MD5来生成缓存标识。
+
+**两者的对比**
+- 精度上，ETag更准确；
+- 性能上，ETag稍逊；
+- 优先级上，服务器校验优先考虑ETag；
+
+## 缓存机制
+强缓存优先于协商缓存进行，如果强缓存（`Expires` 和 `Cache-Control`）生效则直接使用缓存结果，如果不生效则进行协商缓存（`Last-Modify/If-Modified-Since` 和 `ETag/If-None-Match`），协商缓存由服务器来决定是否使用缓存，如果协商缓存失效，那么代表该请求的缓存失效，则返回**200**，重新返回资源结果和缓存标识，再存入浏览器缓存汇总；如果生效则返回**304**，继续使用浏览器内的缓存结果。具体可用下图来表示这个流程：
+
+<Thumbnail
+  src='/myimage/cache3.png'
+  alt='Choose either AWS or GCP'
+  width='556px'
+/>
+
+:::tip
+当我们没有设置任何缓存策略时，浏览器会采用启发式的（`heuristic`）缓存算法（隐式的，W3C规范外的，Chrome 的工程师 VP Darin Fisher 在2008年添油加醋的结果😝）来处理缓存，这也就是为什么我们的缓存有时候会变得捉摸不透，该算法规则为：chrome取响应头中的`(Date - Last_Modified) * 0.10`作为缓存时间。Firefox则是`min(one-week, (Date - Last_Modified) * 0.10)`
+:::
+
+## 实际场景应用下的缓存策略推荐
+### 1. 针对频繁变动的资源
+```http
+Cache-Control:no-cache
+```
+对于频繁变动的资源，首先需要使用 `Cache-Control:no-cache` 使浏览器每次都请求服务器，然后配合 `ETag` 或 `Last-Modified` 来判断资源是否有效。这种做法虽然不能节省请求数量，但是保证了资源的可靠性。
+
+### 2. 针对不常变化的资源
+```http
+Cache-Control:max-age=31536000
+```
+一般在处理这类资源时，会将它们的 `Cache-Control` 配置一个很大的 `max-age=31536000（一年）`，这样浏览器之后请求相同的 `URL` 都会命中强缓存。而为了解决实时更新问题，我们会对变动过的文件名添加 `hash` 动态字符，之后只要它发生变化就变动该动态字符 `hash`，从而达到更改引用 `URL` 的目的，让之前的强制缓存失效（其实并未立即失效，只是不再使用它而已）。
+
+## 题外话：用户行为对浏览器缓存的影响
+当用户在浏览器进行操作，也会触发不同的缓存策略，主要有以下三种：
+
+- 打开网页，地址栏输入地址：查找 `disk cache` 中是否有匹配，如果有则使用；如果没有则发送网络请求。（与 `app` 打开一个 `webview` 的场景相同）
+- 普通刷新（`F5`）：因为 `Tab` 并没有关闭，因此 `memory cache` 是可用的，会优先使用（如果匹配到的话），其次才是 `disk cache`。
+- 强制刷新（`Ctrl+F5`）:浏览器不适用缓存，因此发送的请求头均带有 `Cache-Control:no-cache`（为了兼容，还带了 `Pragma:no-cache`，这是`HTTP1.0`语法），服务器直接返回**200**和资源结果、缓存标识等信息头。
+
+## 最终APP缓存策略方案
+
+针对查询类的业务功能，优先采用 `PWA`，即`Service Worker`；针对非查询类业务功能（占比绝大多数），采用以下策略来优化缓存：
+### 针对HTML文件
+```http
+ Cache-Control:private, max-age=该值待评估
+ // or
+ Cache-Control:no-cache
+```
+### 针对JS/IMG/FONT文件
+```http
+Cache-Control:max-age=31536000
+```
+
+## nginx 配置伪代码
+```js
+if($request_uri ~*\.(appcache)(.*)|sw.js){
+   add_header Cache-Control "private, no-store";
+}
+if($request_uri ~*\.(htm|html)(.*)){
+   add_header Cache-Control "private, max-age=该值待评估";
+}
+if($request_uri ~*\.(js|css)(.*)){
+   add_header Cache-Control "max-age=31536000";
+}
+if($request_uri ~*\.(gif|jpg|jpeg|png|bmp|webp|ttf|otf|ico)){
+   add_header Cache-Control "max-age=31536000";
+}
+```
+
+## 浏览器缓存和 Service Worker 缓存的差异
+- 浏览器缓存更新缓存在UI主线程上进行；`SW` 则是在子线程中进行；
+- 浏览器缓存无法自主控制缓存的失效（除非不定义 `max-age`，但是这样会牺牲性能），就是不能通过编程的方法去控制；`SW` 则可自主的控制缓存资源策略；
+- 浏览器强缓存在某些情况下会被浏览器做资源回收（一般发生在很长的时间跨度下）；`SW` 则不会，主要基于 `Cache Storage` 的控件来存储；

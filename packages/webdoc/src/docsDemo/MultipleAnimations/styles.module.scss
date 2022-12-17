@@ -1,0 +1,29 @@
+.multipleanimations {
+    height: 0px;
+    width: 300px;
+    margin-left: 50%;
+    overflow: hidden;
+    transform: translateX(-50%);
+    background-color: blueviolet;
+    // 多组动画
+    animation: myanimation1 1000ms ease-in 100ms forwards, myanimation2 2000ms
+        ease-out 1100ms forwards;
+  }
+  
+  @keyframes myanimation1 {
+    0% {
+      height: 0px;
+    }
+    100% {
+      height: 200px;
+    }
+  }
+  
+  @keyframes myanimation2 {
+    0% {
+      height: 200px;
+    }
+    100% {
+      height: 0px;
+    }
+  }

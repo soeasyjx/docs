@@ -1,0 +1,7 @@
+#mylist {
+    counter-reset: mycounter 2;
+    > h3:before {
+        counter-increment: mycounter 2;
+        content: '第'counter(mycounter)'行:';
+    }
+}

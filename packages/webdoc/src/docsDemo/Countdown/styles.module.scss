@@ -1,0 +1,47 @@
+.countdown {
+    font-size: 60px;
+    &::after {
+        counter-reset: time var(--t);
+        content: counter(time);
+    }
+}
+
+.countdown2 {
+    font-size: 60px;
+    &::after {
+        // --t: 5;
+        counter-reset: time var(--t);
+        content: counter(time);
+    }
+    &.start {
+        &::after {
+            animation: count 5s forwards;
+        }
+    }
+}
+
+@keyframes count {
+    to {
+        --t: 0;
+    }
+}
+
+.countdown3 {
+    font-size: 60px;
+    &::after {
+        // --t: 5;
+        counter-reset: time var(--mytimer);
+        content: counter(time);
+    }
+    &.start {
+        &::after {
+            animation: count3 5s forwards;
+        }
+    }
+}
+
+@keyframes count3 {
+    to {
+        --mytimer: 0;
+    }
+}

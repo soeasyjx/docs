@@ -1,0 +1,308 @@
+---
+title: pnpm
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+### 创建根目录
+
+我们先新建名为`pnpm-workspace`文件夹，作为我们项目的根目录
+
+```bash
+mkdir pnpm-workspace
+```
+
+### 初始化工程目录
+
+执行`pnpm init`命令后会生成 package.json 文件，我们需要在其中添加 `{"private":"true"}` 以避免将根目录发布到 npm
+
+```bash
+pnpm init
+```
+
+#### package.json
+
+```json
+{
+  "name": "pnpm-workspace",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "private": "false",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
+```
+
+### 新建 pnpm-workspace.yaml
+
+```bash
+mkdir pnpm-workspace.yaml
+```
+
+### packages
+
+新建 packages 子项目工作目录，当然这个名字也不一定要叫`packages`，并将其添加到`pnpm-workspace.yaml` 文件中
+
+```bash
+mkdir packages
+```
+
+#### pnpm-workspace.yaml
+
+```yaml
+packages:
+  # all packages in direct subdirs of packages/
+  - "packages/*"
+```
+
+### 创建子项目
+
+我们在`packages`目录下创建名为 :  
+`child-a`,`child-b`的子项目，当然子项目或者子包都需要使用`pnpm init`进行包信息的初始化工作
+，并在每个子项目中添加`index.js`
+
+现在来看一下我们的目录结构
+
+```
+pnpm-workspace
+├── LICENSE
+├── package.json
+├── packages
+│   ├── child-a
+│   │   ├── index.js
+│   │   └── package.json
+│   └── child-b
+│       ├── index.js
+│       └── package.json
+└── pnpm-workspace.yaml
+```
+
+### 子项目添加测试代码
+
+<Tabs>
+<TabItem value="export" label="child-a">
+
+```js title=index.js
+const testfun = () => {
+  console.log("child-a 模块");
+};
+
+export { testfun };
+```
+
+</TabItem>
+<TabItem value="import" label="child-b">
+
+```js title=index.js
+const testfun = () => {
+  console.log("child-b 模块");
+};
+
+export { testfun };
+```
+
+</TabItem>
+</Tabs>
+
+### 本地测试库
+
+现在我们来对`child-a`，`child-b`进行本地测试，在没用使用 workspace 之前，我们对本地包进行测试一般有以下几种方式：
+
+1. `npm link`或`pnpm link .--global` 将包挂载到全局，然后使用`npm add child-a`或`pnpm link child-a` 在项目中进行安装，以达到测试的目地
+2. 使用类似 [yalc](https://zhuanlan.zhihu.com/p/469010320) 的第三方工具进行测试，在之前公司的项目中我都是使用 yalc 进行包测试的
+3. 发包到 npm 上，然后本地安装进行测试，跟方法一类似，但这个过程比较繁琐，可能会导致版本太多(不推荐)
+
+pnpm link->pnpm link --dir ../../examples/xxxxxx 安装到指定目录
+
+#### 创建 example
+
+让我们新建 example 项目来对子项目进行测试，为了方便我们直接使用 `npx create-react-app example`命令来创建项目
+
+example 项目可以创建到根目录，也可以创建到 packages 里，这个看你个人的喜好了，没什么区别，只是要记得要将`{"private": "false"}`，防止意外发布到 npm
+
+```bash
+npx create-react-app example
+```
+
+:::caution
+这里需要注意一点的是，通过 create-react-app 创建的项目会自己使用 npm 来进行依赖的安装，这里为了统一包管理工具，我们需要删除 example 的依赖包，然后使用`pnpm i`进行安装
+
+使用`pnpm i` 在子项目中安装依赖，最终包会被提升到根目录中的 node_modules 中，子项目中的 node_modules 通过软链的方式引用根目录的相关包
+:::
+
+为了方便在根目录中直接使用 exapmle 中的启动命令，我们需要在根目录中的 package.json 中添加启动 exapmle 的命令
+
+```json
+ "scripts": {
+    "start":"pnpm --filter example run start"
+  },
+```
+
+#### 添加子项目到 example
+
+在根目中执行下面的命令
+
+```bash
+pnpm --filter example add child-a
+```
+
+其实也可以进入到指定的子项目，然后直接执行`pnpm add child-a`，也是可以的
+:::tip
+当然们修改 child-a 项目中的代码后，将会直接将修改后的代码更新到的项目中，因为 example 是通过软链方式引用 child-a
+:::
+现在可以在 exapmle 项目中的 package.json 中看到添加的引用
+
+```json {5}
+ "dependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "child-a": "workspace:^1.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "web-vitals": "^2.1.4"
+  },
+```
+
+#### 引用
+
+在 example 项目中引用`child-a`包
+
+```js
+import { testfun } from "child-a";
+```
+
+#### pnpm 常用命令
+
+- [--filter](https://pnpm.io/zh/filtering) 为 pnpm 命令配置项，表示将命令作用到指定子项目
+
+```bash
+# 执行example 项目中的 start命令
+pnpm --filter example run start
+# 在example项目中添加依赖
+pnpm --filter example add lodash
+```
+
+- [-r, --recursive](https://pnpm.io/zh/cli/recursive) 在工作区(packages)中的每个项目中都运行指定命令
+
+```bash
+# 移除所有子项目中的lodash包
+pnpm -r remove lodash
+# 在所有子项目中添加lodash
+pnpm -r add lodash
+```
+
+### 发布子项目
+
+在开发完成后，我们可以将子项目发布到 npm 上
+
+> 这里默认大伙都有 npm 账号，并且都懂发布的流程
+
+一次性把 child-a，child-b 都发布到 npm 上：
+
+1. npm login
+2. pnpm -r publish **记住这里使用的是 pnpm 进行发布的，而不是 npm**
+
+:::caution
+example 只是用来作测试的，所以不需要发布，这也就是为什么需要添加 private:false，不然会将 example 也一并发布了,其实可以将 example 移出来外面一层目录，这样也可以防止意外发布
+
+使用 pnpm 来进行发布工作，它默认是需要先把代码提交到 git，然后再进行发布的，当然这应该是一个正确的流程，但是我们也可以直接发布不预先提交到 git
+
+```bash
+pnpm -r publish --no-git-checks
+```
+
+或者在.npmrc 中进行设置
+
+```yaml
+git-checks=false
+publish-branch=production
+```
+
+:::
+
+## 常用命令
+
+:::caution
+下面的命令都是在根目录执行的，如果是直接进入到子项目的目录，则不需要`--filter`等关键属性，按平常单包项目添加依赖即可，并且`filter`寻找的是package.json->name 名称，而不是文件夹名称，这点要记住，我也犯了这个错误
+:::
+
+### 子项目安装依赖
+
+```bash
+pnpm --filter child-a add lodash
+# or
+pnpm --filter child-a add lodash@4.0.0
+# 安装最新版本的lodash
+pnpm --filter child-b add lodash
+# 这两个版本将会同时被安装到根目录的node_modules中
+```
+
+**工作空间项目可以安装不同版本的npm包，这也算是workspace的另一个优点吧**
+
+### 所有子项目都安装依赖
+
+```bash
+pnpm -r add lodash
+```
+
+### 安装依赖到根目录
+
+```bash
+pnpm add lodash -w
+```
+
+:::caution
+这里需要注意的是，如果packages里的包版本跟npm 线上的版本一样，则会默认优先安装packages的包，如果你想强制从npm安装，则需要添加
+[link-workspace-packages]属性设置
+
+有关信息可参数：
+[Workspace Settings](https://pnpm.io/zh/npmrc#workspace-settings)
+
+[workspace 协议](https://pnpm.io/zh/workspaces#workspace-%E5%8D%8F%E8%AE%AE-workspace)
+:::
+
+### 执行子项目命令
+
+```bash
+pnpm --filter child-a run build
+```
+
+### 根目录添加执行子任务命令
+
+> 有时候我们喜欢在根目录中去执行子任务的命令，但是上面的写法太繁琐了，大多数情况都会在根目录的 package.json 中添加子项目的命令
+
+```json
+  "scripts": {
+    "start": "pnpm --filter examples run start",
+    "build": "pnpm --filter=rollup-simple-demo run build",
+    "build-lodash": "pnpm --filter=rollup-lodash-demo run build"
+  }
+```
+
+### 执行所有子项目的同名命令
+
+> 前提是必须所有子项目都在 package.json->scripts 中有这一命令`build`
+
+```bash
+pnpm -r run build
+```
+
+**这里有一个问题，通过 pnpm publish 发布成功后，example 中的引用并没有自动修改成使用线上的包，还是引用的本地的包，还需要研究研究，看看是哪里的问题**
+
+## 源码
+
+https://gitee.com/soeasyjx/pnpm-workspace.git
+
+## 参考
+
+- [pnpm](https://jishuin.proginn.com/p/763bfbd3bcff)
+- [pnpm](https://www.jianshu.com/p/7470f49931cd)
+- [pnpm workspace](https://blog.csdn.net/astonishqft/article/details/124823381)
+- [pnpm workspace2](https://zhuanlan.zhihu.com/p/373935751)
+- [pnpm workspace3](https://www.jianshu.com/p/906a76b84332)

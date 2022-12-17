@@ -1,0 +1,14 @@
+{
+  "position": 2,
+  "collapsible": true,
+  "collapsed": false,
+  "className": "red",
+  "link": {
+    "type": "generated-index",
+    "title": "目录总览"
+  },
+  "customProps": {
+    "description": "这个描述可以用在 swizzle 的 DocCard 里111"
+  }
+}
+

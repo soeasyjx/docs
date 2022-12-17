@@ -1,0 +1,44 @@
+---
+title: 条件式动态添加对象属性
+description: 在 javascript 中通过 boolen 值为对象动态添加属性
+---
+
+## 前言
+
+在 `javascript` 中通过 `boolen` 值为对象动态添加属性
+
+## Demo
+```jsx live noInline
+const Demo = () => {
+  const [isValid, setIsValid] = useState(true);
+  const [age, setAge] = useState(10);
+  const obj = useMemo(() => {
+    const person = {
+      id: "abc123",
+      name: "测试用例",
+      ...(isValid && { isActive: true }),
+      ...((age >= 15 || isValid) && { cart: 0 })
+    };
+    return JSON.stringify(person);
+  }, [isValid, age]);
+  return (
+    <div>
+      <section>输出：{obj}</section>
+    </div>
+  );
+};
+
+render(<Demo />);
+```
+
+## 知识点
+
+:::tip
+():将括号中的内容当成表达式去解析
+
+表达式：js 中的一个短语，js 解释器会将其计算出一个结果。程序中的常量是最简单的一类表达式。
+
+变量名也是一种简单的表达式，它的值就是赋值给变量的值。复杂表达式是由简单表达式组成的。
+:::
+
+

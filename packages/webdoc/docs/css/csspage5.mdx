@@ -1,0 +1,334 @@
+---
+id: lightdarkmode
+title: 暗黑模式切换
+displayed_sidebar: baseSidebar
+---
+
+import CodeBlock from "@theme/CodeBlock";
+import Thumbnail from "@site/src/components/Thumbnail";
+import { LightDarkModeDemo } from "@site/src/docsDemo/LightDarkMode";
+import { LightDarkModeSystemDemo } from "@site/src/docsDemo/LightDarkModeSystem";
+import { LightDarkModeColorSchemeDemo } from "@site/src/docsDemo/LightDarkModeColorScheme";
+import LightDarkModeSystemDemoSource from "!!raw-loader!@site/src/docsDemo/LightDarkModeSystem";
+import Details from "@theme/Details";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+
+## 前言
+
+现在高大上的网站都会添加一些 css 高级效果，来做出一些极尽奢华的页面效果，其中`暗黑模式` 是我认为比较高级的一种效果了，包括你正在阅读的文档也提供了`暗黑模式`效果，大伙点击右上角太阳形状进行切换，实现页面暗黑模式的方法有很多种，下面将一一对其进行简单的介绍
+
+:::tip
+首先大伙要明白暗黑模式其实有系统层面，还有我们前端编码层的两种概念
+
+编码层面：通过`css+javascript`以硬编码的形式从效果上实现暗黑模式切换，考虑到兼容性问题这也是主要实现`暗黑模式`切换的方式，也是这篇文章主要讲解的技术路线
+
+系统层面：以我的 MAC 电脑为例，可在`通用`里面设置外观为`深色`，如下图所示
+
+页面中如有`form 表单元素[input,button,checkbox等]`会受系统选择的`强调色`值影响，可以通过[`accent-color`](https://developer.mozilla.org/en-US/docs/Web/CSS/accent-color) 来控制表单元素的交互色
+
+<Thumbnail
+  src="/myimage/lightdarkmode1.png"
+  alt="Choose either AWS or GCP"
+  width="556px"
+/>
+:::
+
+## css+自定义 html 属性
+
+使用`css` 编码方式来实现`暗黑模式`切换是目前的主流方法，也是比较容易实现的，大概思路就是我们有分别对应`暗`和`亮`的两套`css`，通过[`css 属性选择器`](https://www.w3school.com.cn/cssref/selector_attribute_value.asp)来实现切换  
+**这种模式不会跟系统主题色变化而变化**
+
+<Details summary={<summary>css属性选择器</summary>}>
+CSS 属性选择器通过已经存在的属性名或属性值匹配元素。
+#### 语法
+
+[attr]
+表示带有以 attr 命名的属性的元素。
+
+[attr=value]
+表示带有以 attr 命名的属性，且属性值为 value 的元素。
+
+[attr~=value]
+表示带有以 attr 命名的属性的元素，并且该属性是一个以空格作为分隔的值列表，其中至少有一个值为 value。
+
+[attr|=value]
+表示带有以 attr 命名的属性的元素，属性值为“value”或是以“value-”为前缀（"-"为连字符，Unicode 编码为 U+002D）开头。典型的应用场景是用来匹配语言简写代码（如 zh-CN，zh-TW 可以用 zh 作为 value）。
+
+[attr^=value]
+表示带有以 attr 命名的属性，且属性值是以 *value *开头的元素。
+
+[attr$=value]
+表示带有以 attr 命名的属性，且属性值是以 *value *结尾的元素。
+
+[attr*=value]
+表示带有以 attr 命名的属性，且属性值至少包含一个 *value *值的元素。
+
+[attr operator value i]
+在属性选择器的右方括号前添加一个用空格隔开的字母 i（或 I），可以在匹配属性值时忽略大小写（支持 ASCII 字符范围之内的字母）。
+
+[attr operator value s] Experimental
+在属性选择器的右方括号前添加一个用空格隔开的字母 s（或 S），可以在匹配属性值时区分大小写（支持 ASCII 字符范围之内的字母）。
+
+#### 示例
+
+```css
+/* 存在 title 属性的<a> 元素 */
+a[title] {
+  color: purple;
+}
+
+/* 存在 href 属性并且属性值匹配"https://example.org"的<a> 元素 */
+a[href="https://example.org"]
+{
+  color: green;
+}
+
+/* 存在 href 属性并且属性值包含"example"的<a> 元素 */
+a[href*="example"] {
+  font-size: 2em;
+}
+
+/* 存在 href 属性并且属性值结尾是".org"的<a> 元素 */
+a[href$=".org"] {
+  font-style: italic;
+}
+
+/* 存在 class 属性并且属性值包含以空格分隔的"logo"的<a>元素 */
+a[class~="logo"] {
+  padding: 2px;
+}
+```
+
+</Details>
+
+### 演示
+
+<BrowserWindow>
+<Tabs>
+<TabItem value="html" label="html">
+
+```html
+<!DOCTYPE html>
+<html lang="en" id="myhtml" data-theme="light">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>暗黑主题切换</title>
+  </head>
+  <body>
+    <span>点击可进行主题的切换</span>
+    <div>
+      <label>
+        亮
+        <input name="lightdarkmode" type="radio" id="light" checked />
+      </label>
+      <label>
+        暗
+        <input name="lightdarkmode" type="radio" id="dark" />
+      </label>
+    </div>
+    <div>
+      <div id="app">
+        <p>测试文字1</p>
+        <p>测试文字2</p>
+        <p>测试文字3</p>
+      </div>
+    </div>
+  </body>
+</html>
+```
+
+</TabItem>
+<TabItem value="javascript" label="javascript">
+
+```js
+document.querySelector("#light").addEventListener("change", (v) => {
+  document.childNodes[1].setAttribute("data-theme", "light");
+});
+
+document.querySelector("#dark").addEventListener("change", (v) => {
+  document.childNodes[1].setAttribute("data-theme", "dark");
+});
+```
+
+</TabItem>
+<TabItem value="css" label="css">
+
+```css
+html[data-theme="light"] #app {
+  background-color: #fff;
+  color: blueviolet;
+}
+
+html[data-theme="dark"] #app {
+  background-color: #000000;
+  color: #fff;
+}
+```
+
+</TabItem>
+</Tabs>
+<LightDarkModeDemo/>
+</BrowserWindow>
+
+### 原理
+
+通过在`html` 标签上放置自定义属性，如`data-myhtml='light'`，在 css 中根据**css 属性选择器**写入两个模式[亮/暗]下的样式，通过一定的机制触发修改动态`data-myhtml` 属性值，进而达到切换暗黑主题的效果
+
+## css 媒体查询
+
+`prefers-color-scheme` CSS 媒体特性(media)用于检测用户是否有将系统的主题色设置为亮色或者暗色，这是属于<u>系统级别</u>的监测
+
+<Details summary={<summary>prefers-color-scheme语法</summary>}>
+no-preference
+表示系统未得知用户在这方面的选项。在布尔值上下文中，其执行结果为 false。
+
+light
+表示用户已告知系统他们选择使用浅色主题的界面。
+
+dark
+表示用户已告知系统他们选择使用暗色主题的界面。
+
+#### 使用
+
+```css
+ {
+  /* 浅色/亮色主题 */
+}
+@media (prefers-color-scheme: dark) {
+  .day.dark-scheme {
+    background: #333;
+    color: white;
+  }
+  .night.dark-scheme {
+    background: black;
+    color: #ddd;
+  }
+}
+ {
+  /* 暗色主题 */
+}
+@media (prefers-color-scheme: light) {
+  .day.light-scheme {
+    background: white;
+    color: #555;
+  }
+  .night.light-scheme {
+    background: #eee;
+    color: black;
+  }
+}
+```
+
+</Details>
+
+### 演示
+
+<BrowserWindow>
+<Tabs>
+<TabItem value="html" label="tsx">
+<CodeBlock language="tsx">{LightDarkModeSystemDemoSource}</CodeBlock>
+</TabItem>
+<TabItem value="css" label="css">
+
+```css
+@media (prefers-color-scheme: light) {
+  #app {
+    background-color: #fff;
+    color: blueviolet;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  #app {
+    background-color: #000000;
+    color: #fff;
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+<LightDarkModeSystemDemo/>
+</BrowserWindow>
+
+### 原理
+
+通过使用`css`媒体查询[`@media`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@media)+[`prefers-color-scheme`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@media/prefers-color-scheme)媒体特性，检测用户是否有将系统的主题色设置为亮色或者暗色
+并分别编写亮色和暗色样式
+
+### [window.matchMedia](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/matchMedia)
+
+`window.matchMedia()`方法用来将 CSS 的`Media Query`条件语句，转换成一个 [`MediaQueryList`](https://developer.mozilla.org/zh-CN/docs/Web/API/MediaQueryList) 实例
+
+#### 用法
+
+```js
+const media = window.matchMedia("(prefers-color-scheme: dark)");
+```
+
+### [MediaQueryList.onchange](https://developer.mozilla.org/zh-CN/docs/Web/API/MediaQueryList/change_event)
+
+当媒体查询的支持状况改变时，`MediaQueryList` 接口的 `change` 事件触发  
+如果 `MediaQuery` 条件语句的适配环境发生变化，会触发`change`事件。`MediaQueryList.onchange`属性用来指定`change`事件的监听函数。该函数的参数是`change`事件对象（MediaQueryListEvent 实例），该对象与 `MediaQueryList` 实例类似，也有`media`和`matches`属性。
+
+#### 用法
+
+```js
+// 添加监听
+mediaInstance.addEventListener("change", callback);
+
+// 移除监听
+mediaInstance.removeEventListener("change", callback);
+```
+
+## [color-scheme](https://developer.mozilla.org/zh-CN/docs/Web/CSS/color-scheme)
+
+`color-scheme` CSS 属性允许元素指示它可以轻松呈现的配色方案。
+
+操作系统配色方案的常见选择是`亮`和`暗`，或者是`白天模式`和`夜间模式`。当用户选择其中一种配色方案时，操作系统会对<u>用户界面</u>进行调整。这包括<u>表单控件</u>、<u>滚动条</u>和 <u>CSS 系统颜色的使用值</u>。
+
+### 演示
+<LightDarkModeColorSchemeDemo/>
+
+### 用法
+
+```css
+:root {
+  color-scheme: light dark;
+}
+/* or */
+html {
+  color-scheme: light dark;
+}
+
+input[type=radio]{
+    color-scheme: light dark;
+}
+```
+
+:::caution
+目前测试下来 `:root`或`html` css选择器设置该属性会让页面在暗色的时候，字体颜色变成白色，反之就是黑色（没用手动调整过字体颜色值），`color-scheme` 可以赋多值  
+赋值解释：  
+light dark：表示应用系统`亮`和`暗`配色方案，当系统设置为`亮`色时，html页面将使用亮色，反之也一样  
+dark: html页面默认系统使用`暗`配色方案  
+light: html页面默认系统使用`亮`配色方案  
+:::
+
+[参数资料](https://color-scheme-light-dark.netlify.app/?utm_source=CSS-Weekly&utm_campaign=Issue-516&utm_medium=web)
+
+## [accent-color](https://developer.mozilla.org/en-US/docs/Web/CSS/accent-color)
+
+CSS `accent-color` 属性可以在不改变浏览器默认表单组件基本样式的前提下重置组件的颜色。
+
+目前支持下面这些 HTML 控件元素：
+
+```
+复选框：<input type=”checkbox”>
+单选框<input type=”radio”>  
+范围选择框：<input type=”range”>  
+进度条：<progress>  
+```
+这个属性就不做过多的介绍了，感觉兴趣的朋友可以自己查查资料

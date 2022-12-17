@@ -1,0 +1,29 @@
+---
+title: 截取小数点位数
+description: 保留小数点位数，不会进行四舍五入，直接截取
+---
+
+## 前言
+
+`javascript` 保留小数点位数，不会进行四舍五入，直接截取
+
+## Demo
+```jsx live noInline
+const toFixed = (n, fixed) => ~~(Math.pow(10, fixed) * n) / Math.pow(10, fixed);
+const num = 25.198726354;
+const Demo = () => {
+  return (
+    <>
+      {String(toFixed(num, 1))}<br/>
+      {String(toFixed(num, 2))}<br/>
+      {String(toFixed(num, 3))}<br/>
+      {String(toFixed(num, 4))}<br/>
+      {String(toFixed(num, 5))}<br/>
+      {String(toFixed(num, 6))}<br/>
+      {String(toFixed(num, 7))}<br/>
+    </>
+  );
+};
+render(<Demo />);
+```
+

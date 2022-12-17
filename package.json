@@ -1,0 +1,22 @@
+{
+  "name": "docusaurus",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start-webdoc": "pnpm --filter=webdoc run start",
+    "build-webdoc": "pnpm --filter=webdoc run build",
+    "start-ts": "pnpm --filter=typescriptdoc run start",
+    "build-ts": "pnpm --filter=typescriptdoc run build",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.2.0",
+    "@commitlint/config-conventional": "^17.2.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

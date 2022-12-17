@@ -1,0 +1,364 @@
+---
+title: 构建工具
+---
+
+import Thumbnail from "@site/src/components/Thumbnail";
+
+## 前言
+
+一直想出一个关于前端构建工具系列主题的文章，前端构建我想是每一个前端程序员都应该都学习和了解的，当然在实际开发中由于公司职级划分，你可能不需要去从头搭建一个前端开发工程，这就是所谓的专人专项。但是本着技多不压身的心态，多多学习是没有坏处的。
+
+## 基于浏览器的模块化
+
+### IIFE
+
+立即调用函数表达式(iife) 我认为是最早的模块化方案吧，其实就是一个自执行函数。它有独立的词法作用域。这不仅避免了外界访问此 IIFE 中的变量，而且又不会污染全局作用域
+
+:::tip
+这里稍微扩展一下，像 rollup，webpack 等一下打包编译工具，都有输出 iife 的属性选项，这里的 iife 跟上面是同一个意思，只是这些打包工具会让你指定一个输出的名称，然后这个名称是挂在 window 变量上的，一般iife模块的引用都是通过`<script>`标签在html引入
+:::
+
+#### 用法
+
+```js
+(function () {
+  var privateVariable = "I can not access outer";
+  var privateFunction = function doSomething() {};
+})();
+```
+
+### CommonJS
+
+一切的开始要从 CommonJS 规范说起。
+
+CommonJS 本来叫 ServerJs，其目标本来是为浏览器之外的 javascript 代码制定规范，在那时 NodeJs 还没有出生，有一些零散的应用于服务端的 JavaScript 代码，但是没有完整的生态。
+
+之后就是 NodeJs 从 CommonJS 社区的规范中吸取经验创建了本身的模块系统。
+
+### RequireJs 和 AMD
+
+CommonJs 是一套同步模块导入规范，但是在浏览器上还没法实现同步加载，这一套规范在浏览器上明显行不通，所以基于浏览器的异步模块 AMD(Asynchronous Module Definition)规范诞生。
+
+#### 语法
+
+`define(id?, dependencies?, factory)`
+
+#### 使用
+
+```js
+define("xxx", ["module1", "module2"], function () {});
+```
+
+AMD 规范采用依赖前置，先把需要用到的依赖提前写在 dependencies 数组里，在所有依赖下载完成后再调用 factory 回调，通过传参来获取模块，同时也支持 require("beta")的方式来获取模块，但实际上这个 require 只是语法糖，模块并非在 require 的时候导入，而是跟前面说的一样在调用 factory 回调之前就被执行，关于依赖前置和执行时机这点在当时有很大的争议，被 CommonJs 社区所不容。
+
+在当时浏览器上应用 CommonJs 还有另外一个流派 module/2.0， 其中有 BravoJS 的 Modules/2.0-draft 规范和 FlyScript 的 Modules/Wrappings 规范。
+
+奈何 RequireJs 如日中天，根本争不过。
+
+关于这段的内容可以看玉伯的 前端模块化开发那点历史。
+
+### Sea.js 和 CMD
+
+在不断给 RequireJs 提建议，但不断不被采纳后，玉伯结合 RequireJs 和 module/2.0 规范写出了基于 CMD（Common Module Definition）规范的 Sea.js。
+
+#### 语法
+
+`define(factory)`
+
+#### 使用
+
+```js
+define(function (require, exports, module) {
+  var add = require("math").add;
+  exports.myadd = function () {
+    return add(1, 2);
+  };
+});
+```
+
+在 CMD 规范中，一个模块就是一个文件。模块只有在被 require 才会被执行。
+相比于 AMD 规范，CMD 更加简洁，而且也更加易于兼容 CommonJS 和 Node.js 的 Modules 规范。
+
+### ESM
+
+前端模块化新曙光，随着`ESM`的推出并写入 ECMAScript 标准，它随着 ES6 发布，终结了前端模块化百家争鸣的局面，ES6 在语言标准的层面上，实现了模块功能，而且实现得相当简单，完全可以取代 CommonJS 和 AMD 规范，成为浏览器和服务器通用的模块解决方案。
+
+模块功能主要由两个命令构成：`export`和`import`。`export`命令用于规定模块的对外接口，`import`命令用于输入其他模块提供的功能。
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+<Tabs>
+<TabItem value="export" label="export">
+
+```js title=mymodule1.js
+export var firstName = "Michael";
+export var lastName = "Jackson";
+export var year = 1958;
+export default function() myfun(){}
+```
+
+</TabItem>
+<TabItem value="import" label="import">
+
+```js title=mymodule2.js
+import { firstName, lastName, year } from "./mymodule.js";
+import defaultmyfun from "./mymodule.js";
+```
+
+</TabItem>
+</Tabs>
+
+### 总结
+
+RequireJs 和 Sea.js 都是利用动态创建 script 来异步加载 js 模块的。
+
+在作者还是前端小白使用这两个库的时候就很好奇它是怎么在函数调用之前就获取到其中的依赖的，后来看了源码后恍然大悟，没想到就是简单的函数 toString 方法
+
+通过对 factory 回调 toString 拿到函数的代码字符串，然后通过正则匹配获取 require 函数里面的字符串依赖
+这也是为什么二者都不允许 require 更换名称或者变量赋值，也不允许依赖字符串使用变量，只能使用字符串字面量的原因
+
+规范之争在当时还是相当混乱的，先有 CommonJs 社区，然后有了 AMD/CMD 规范和 NodeJs 的 module 规范，但是当那些 CommonJs 的实现库逐渐没落，并随着 NodeJs 越来越火，我们口中所说的 CommonJs 好像就只有 NodeJs 所代表的 modules 了。
+
+## 模块化-构建工具
+
+<Thumbnail
+  src="/myimage/compile/compile1.jpg"
+  alt="Choose either AWS or GCP"
+  width="556px"
+/>
+
+### browserify
+
+browserify 致力于在浏览器端使用 CommonJs，他使用跟 NodeJs 一样的模块化语法，然后将所有依赖文件编译到一个 bundle 文件，在浏览器通过<code><script\></code>标签使用的，并且支持 npm 库。
+
+```js title=main.js[伪代码]
+var foo = require("./test.js");
+var gamma = require("gamma");
+
+var dom = document.getElementById("id");
+var x = foo(x);
+dom.textContent = gamma(x);
+```
+
+```bash
+$ browserify main.js->bundle.js
+```
+
+当时 RequireJs(r.js)虽然也有了 node 端的 api 可以编译 AMD 语法输出到单个文件，但主流的还是使用浏览器端的 RequireJs。
+
+### AMD / RequireJS
+
+```js
+require(["./module1.js", "./module2.js"], function (
+  module1Context,
+  module2Context
+) {
+  // 导出给其它AMD模块用
+  return {};
+});
+```
+
+### CommonJS
+
+```js
+var module1=require('./module1.js');
+var module2=require('./module2.js');
+
+module.exports={
+    ...
+}
+```
+
+相比于 AMD 规范为浏览器做出的妥协，在服务端的预编译方面 CommonJs 的语法更加友好。
+
+常用的搭配就是 browserify + Grunt，使用 Grunt 的 browserify 插件来构建模块化代码，并对代码进行压缩转换等处理。
+
+### UMD
+
+现在有了 RequireJs，也有了 browserify 但是这两个用的是不同的模块化规范，所以有了 UMD - 通用模块规范，UMD 规范就是为了兼容 AMD 和 CommonJS 规范。就是以下这坨东西：
+
+```js
+(function (root, factory) {
+  if (typeof define === "function" && define.amd) {
+    // AMD
+    define(["jquery"], factory);
+  } else if (typeof exports === "object") {
+    // Node, CommonJS-like
+    module.exports = factory(require("jquery"));
+  } else {
+    // Browser globals (root is window)
+    root.returnExports = factory(root.jQuery);
+  }
+})(this, function ($) {
+  //    methods
+  function myFunc() {}
+
+  //    exposed public method
+  return myFunc;
+});
+```
+
+:::caution
+在编译工具如果选择输入的文件类型是`UMD`一般都需要提供一个输出名称，表示挂到 window 上的属性名
+:::
+
+## 构建工具
+
+### Grunt
+
+随着 NodeJs 的逐渐流行，基于 NodeJs 的自动化构建工具 Grunt 诞生
+
+Grunt 可以帮我们自动化处理需要反复重复的任务，例如压缩（minification）、编译、单元测试、linting 等，还有强大的插件生态。
+
+```js
+module.exports=function(grunt){
+    grunt.initConfig=({
+        pkg:grunt.file.readJSON("package.json"),
+        uglify:{
+            options:{...},
+            build:{...}
+        }
+    });
+    grunt.registerTask('default',['uglify'])
+}
+
+```
+
+### Gulp
+
+上面说到 Grunt 是基于配置的，配置化的上手难度较高，需要了解每个配置的参数，当配置复杂度上升的时候，代码看起来比较混乱。  
+gulp 基于代码配置和对 Node.js 流的应用使得构建更简单、更直观。可以配置更加复杂的任务。
+
+```js
+var browserify = require("browserify");
+var source = require("vinly-source-stream");
+var buffer = require("vinly-buffer");
+var uglify = require("gulp-uglify");
+var size = require("gulp-size");
+var gulp = require("gulp");
+
+gulp.task("build", function () {
+  var bundler = browserify("./test.js");
+  return bundler
+    .bundle()
+    .pipe(source("index.js"))
+    .pipe(buffer())
+    .pipe(uglify())
+    .pipe(size())
+    .pipe(gulp.dest("dist/"));
+});
+```
+
+以上是一个配置 browserify 的例子，可以看出来非常简洁直观。
+
+### webpack
+
+webpack1 支持 CommonJs 和 AMD 模块化系统，优化依赖关系，支持分包，支持多种类型 script、image、file、css/less/sass/stylus、mocha/eslint/jshint 的打包，丰富的插件体系。
+
+以上的 3 个库 Grunt/Gulp/browserify 都是偏向于工具，而 webpack 将以上功能都集成到一起，相比于工具它的功能大而全。
+
+webpack 的概念更偏向于工程化，但是在当时并没有马上火起来，因为当时的前端开发并没有太复杂，有一些 mvc 框架但都是昙花一现，前端的技术栈在 requireJs/sea.js、grunt/gulp、browserify、webpack 这几个工具之间抉择。
+
+webpack 真正的火起来是在 2015/2016，随着 ES2015（ES6）发布，不止带来了新语法，也带来了属于前端的模块规范 ES module，vue/react/Angular 三大框架打得火热，webpack2 发布：支持 ES module、babel、typescript，jsx，Angular 2 组件和 vue 组件，webpack 搭配 react/vue/Angular 成为最佳选择，至此前端开发离不开 webpack，webpack 真正成为前端工程化的核心。
+
+webpack 的其他功能就不在这里赘述。
+
+#### 原理
+
+webpack 主要的三个模块就是，后两个也是我们经常配置的：
+
+- 核心流程
+- loader
+- plugins
+
+webpack 依赖于 Tapable 做事件分发，内部有大量的 hooks 钩子，在 Compiler 和 compilation 核心流程中通过钩子分发事件，在 plugins 中注册钩子，实际代码全都由不同的内置 plugins 来执行，而 loader 在中间负责转换代码接受一个源码处理后返回处理结果 content string -> result string。
+
+因为钩子太多了，webpack 源码看起来十分的绕，简单说一下大致流程：
+
+1. 通过命令行和 webpack.config.js 来获取参数
+2. 创建 compiler 对象，初始化 plugins
+3. 开始编译阶段，addEntry 添加入口资源
+4. addModule 创建模块
+5. runLoaders 执行 loader
+6. 依赖收集，js 通过 acorn 解析为 AST，然后查找依赖，并重复 4 步
+7. 构建完依赖树后，进入生成阶段，调用 compilation.seal
+8. 经过一系列的 optimize 优化依赖，生成 chunks，写入文件
+
+webpack 的优点就不用说了，现在说一下 2 个缺点：
+
+- 配置复杂
+- 大型项目构建慢
+
+配置复杂这一块一直是 webpack 被吐槽的一点，主要还是过重的插件系统，复杂的插件配置，插件文档也不清晰，更新过快插件没跟上或者文档没跟上等问题。
+
+比如现在 webpack 已经到 5 了网上一搜全都是 webpack3 的文章，往往是新增一个功能，按照文档配置完后，诶有报错，网上一顿查，这里拷贝一段，那里拷贝一段，又来几个报错，又经过一顿搞后终于可以运行。
+
+后来针对这个问题，衍生出了前端脚手架，react 出了 create-react-app，vue 出了 vue-cli，脚手架内置了 webpack 开发中的常用配置，达到了 0 配置，开发者无需关心 webpack 的复杂配置。
+
+### rollup
+
+2015 年，前端的 ES module 发布后，rollup 应声而出。
+
+rollup 编译 ES6 模块，提出了 Tree-shaking，根据 ES module 静态语法特性，删除未被实际使用的代码，支持导出多种规范语法，并且导出的代码非常简洁，如果看过 vue 的 dist 目录代码就知道导出的 vue 代码完全不影响阅读。
+
+rollup 的插件系统支持：babel、CommonJs、terser、typescript 等功能。
+
+相比于 browserify 的 CommonJs，rollup 专注于 ES module。
+相比于 webpack 大而全的前端工程化，rollup 专注于纯 javascript，大多被用作打包 tool 工具或 library 库。
+
+react、vue 等库都使用 rollup 打包项目，并且下面说到的 vite 也依赖 rollup 用作生产环境打包 js。
+
+#### Tree-shaking
+
+<Tabs>
+<TabItem value="export" label="export">
+
+```js title=mymodule1.js
+export const a = 1;
+export const b = 2;
+```
+
+</TabItem>
+<TabItem value="import" label="import">
+
+```js title=mymodule2.js
+import { a } from "./mymodule1.js";
+console.log("a", a);
+```
+
+</TabItem>
+</Tabs>
+
+以上代码最终打包后 b 的声明就会被删除掉。
+
+这依赖 ES module 的静态语法，在编译阶段就可以确定模块的导入导出有哪些变量。
+
+CommonJs 因为是基于运行时的模块导入，其导出的是一个整体，并且 require(variable)内容可以为变量，所以在 ast 编译阶段没办法识别为被使用的依赖。
+
+webpack4 中也开始支持 tree-shaking，但是因为历史原因，有太多的基于 CommonJS 代码，需要额外的配置。
+
+### esbuild
+
+Esbuild 是由 Figma 的 CTO 「Evan Wallace」基于 Golang 开发的一款打包工具，相比传统的打包工具，主打性能优势，在构建速度上可以快 10~100 倍。
+
+它之所以速因为底层使用的是 go 语言来编写的，js 是单线程的，这真是一个降维的杀伤力，但是话又说回来了，打包速度快不快真的是你需要十分关心的么，在项目开发中，不会因为速度慢一些，而怎么怎么样吧，衡量一门语言或工具是否有发展，我个人
+认为有至关重要的两点
+
+1. 语言本身的强大
+2. 生态
+
+<Thumbnail
+  src="/myimage/compile/compile2.png"
+  alt="Choose either AWS or GCP"
+  width="556px"
+/>
+
+### babel
+
+Babel 是一个编译器，针对 javascript 可以编译出在各种预设浏览器环境下正常运行的脚本。换句话说，就是将我们的 javascript 高级语言特性编译成能在各种环境下都提供一致表现的 javscript
+
+```js
+const name="jx"->var name="jx"
+```
+

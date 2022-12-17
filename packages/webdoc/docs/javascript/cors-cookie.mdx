@@ -1,0 +1,154 @@
+---
+id: cors-cookie
+title: 跨域请求 cookie
+description: 在跨域情况下如何发送cookie
+tags: [hello, docusaurus-v2]
+displayed_sidebar: baseSidebar
+---
+## 前言
+跨域资源共享(CORS)是一种浏览器基于 `http` 头的机制，出于安全考虑，浏览器限制脚本内发起的跨域 `http` 请求，[`XMLHttpRequest`](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest)，[`Fetch`](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Basic_concepts) API 遵循同源策略，本文主要讲解 `cookie` 跨域的相关用例及处理方法
+
+## CORS
+**浏览器 http 请求特有机制**
+
+`CORS` 是**浏览器**http 请求的特有安全机制，所以这就是为什么用 `postman` 等客户端工具 发起 `http` 请求不会出现 `CORS` 现象的原因。
+服务端与服务端之前通信是不存在跨域情况的，[`webpack proxy`](https://webpack.docschina.org/configuration/dev-server/#devserverproxy) 也正是利用这个原理去帮助前端在开发过程中实现浏览器请求跨域访问的
+
+## 创建测试目录
+
+```
+cookie
+├── README.md
+├── client[客户端]
+│   ├── index.html
+│   └── index.js
+└── service[服务端]
+    ├── index.js
+    ├── package.json
+    └── pnpm-lock.yaml
+```
+
+## 客户端测试代码
+
+:::tip
+
+为了方便这里我就直接使用`axios` 作为前端的`http`请求库，对于 `axios`不熟悉的小伙伴，可以查看[转送门](https://axios-http.com/docs/intro)
+
+:::
+
+### index.html
+
+```html showLineNumbers
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 引入axios -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"
+      defer
+    ></script>
+    <script src="./index.js" defer></script>
+    <title>cookie 跨域</title>
+  </head>
+  <body>
+    <!-- 登录按钮 首先会进行登录 -->
+    <input id="login" type="button" value="模拟登录" />
+    <!-- 点击按钮发送请求 -->
+    <input id="btn" type="button" value="点击获取跨域数据" />
+  </body>
+</html>
+```
+
+### index.js
+
+```js {16} showLineNumbers
+document.getElementById("login").addEventListener("click", async () => {
+  try {
+    const data = await axios({
+      method: "post",
+      url: "http://localhost:3000/login"
+    });
+    console.log("登录成功");
+  } catch (error) {}
+});
+
+document.querySelector("#btn").addEventListener("click", async () => {
+  try {
+    const bbb = await axios({
+      method: "get",
+      // withCredentials:true允客户端发送 cookie 到服务器
+      withCredentials: true,
+      url: "http://localhost:3000/test"
+    });
+    console.log("bbb", bbb);
+  } catch (error) {
+    console.log("error", error);
+  }
+});
+```
+
+**withCredentials**:`XMLHttpRequest.withCredentials` 属性是一个 `Boolean` 类型，它指示了是否该使用类似 `Cookies`、`Authorization Headers` (头部授权) 或者 TLS 客户端证书这一类资格证书来创建一个跨站点访问控制`cross-site Access-Control`请求。在同一个站点下使用 `withCredentials` 属性是无效的
+
+## Node 服务端测试代码
+
+:::tip
+
+使用`express`来在 Node 程序中快速构造并开起服务，[转送门](https://www.expressjs.com.cn/starter/hello-world.html)
+:::
+
+### 安装 express
+
+```bash npm2yarn
+npm install express
+```
+
+### index.js
+
+```js {9,10,16,17} showLineNumbers
+const express = require("express");
+
+const app = express();
+const port = 3000;
+
+app.all("*", (request, reponset, next) => {
+  //  reponset.header("Access-Control-Allow-Origin", "*");
+  // 允许浏览器将 cookie 凭证返回给服务端
+  reponset.header("Access-Control-Allow-Origin", "http://127.0.0.1:5500");
+  reponset.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
+
+app.post("/login", (req, res) => {
+  // 设置 cookie
+  res.cookie("name", "jiangxin");
+  res.sendStatus(200);
+});
+
+app.get("/test", (req, res) => {
+  res.json({
+    name: "cookie 测试",
+    age: 100
+  });
+});
+
+app.listen(port, () => {
+  console.log("服务启动成功");
+  console.log("http://localhost:3000");
+});
+```
+
+:::caution
+
+- 当响应的是[附带身份凭证的请求](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/CORS#%E9%99%84%E5%B8%A6%E8%BA%AB%E4%BB%BD%E5%87%AD%E8%AF%81%E7%9A%84%E8%AF%B7%E6%B1%82)时，服务端**必须**明确  `Access-Control-Allow-Origin`的值，而不能使用通配符“`*`”
+- Access-Control-Allow-Credentials:true 允许服务端响应头上包含 cookie 信息，注意：新版谷歌浏览器已将 cookie 单独抽离成一个 tab，不再显示在 request 头信息中
+- client 端需要设置 withCredentials:true：允许客户端请求头中带有 cookie ；在同源下使用`withCredentials属性是无效的`
+- Chrome 90之前的版本，需要手动设置浏览器的SameSite 才行，>=90版本已经关闭了这个设置，Chrome 已经不允许跨域cookie传送了，使用代理可以解决这个问题
+:::
+
+## 参考资料
+
+https://www.cnblogs.com/caijinghong/p/14180408.html
+

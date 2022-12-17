@@ -1,0 +1,75 @@
+---
+id: lineheight
+title: 关于line-height的一点点建议
+description: 正确的设置line-height值
+---
+
+## 前言
+
+[line-height](https://developer.mozilla.org/zh-CN/docs/Web/CSS/line-height) CSS 属性设置行的高度，您可以使用它来设置文本行之间的间距
+
+## 语法
+
+```css
+body {
+  line-height: normal; /* default */
+  line-height: 1.5; /* number */
+  line-height: 2em; /* length */
+  line-height: 55%; /* percentage */
+}
+```
+
+### 默认值
+
+默认值为**normal**，取决于用户端。桌面浏览器（包括 Firefox）使用默认值，约为 1.2，这取决于元素的 font-family
+
+### 数字（无单位）值
+
+当使用该`number`类型值时，元素的 font-size 将乘以该值。**我建议您使用此选项进行设置 line-height 以避免意外结果**
+
+#### 示例
+
+```css
+p {
+  font-size: 20px;
+  line-height: 1.2; /* 因此，行高将是:20px * 1.2 = 24px */
+}
+```
+
+### 长度
+
+当使用该`length`值时，则使用指定的值来计算线的高度。接受的值：px、em、rem、pt、cm 等
+
+#### 示例
+
+```css
+p {
+  line-height: 36px;
+}
+
+article {
+  line-height: 2em;
+}
+
+section {
+  line-height: 1.5rem;
+}
+```
+
+### 百分比值
+
+与元素自身的字体大小有关。计算值是给定的百分比值乘以元素计算出的字体大小。百分比值可能会带来不确定的结果
+
+```css
+.example-div {
+  line-height: 150%;
+}
+```
+
+## 无障碍方面
+主段落内容的 `line-height` 至少应为 `1.5`。 这将有助于改善低可视条件下的体验，也对认知阻碍者，如阅读困难者，有帮助。如果文字的大小要随页面的缩放而变化，请使用无单位的值，以确保行高也会等比例缩放。
+
+## 总结
+1. line-height 用于给文字行之间添加空间。默认值为normal或1.2
+2. 接受的值：normal| number| length
+3. 推荐使用: `percentage`、`number`、1.5

@@ -1,0 +1,174 @@
+---
+id: counter
+title: 自定义计数器
+description: counter counter-reset counter-increment
+---
+
+import CodeBlock from "@theme/CodeBlock";
+import Details from "@theme/Details";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import { CounterDemo } from "@site/src/docsDemo/Counter";
+import CounterDemoSource from "!!raw-loader!@site/src/docsDemo/Counter";
+import CounterDemoSourceStyle from "!!raw-loader!@site/src/docsDemo/Counter/styles.module.scss";
+
+## 前言
+
+css 计数器？？啥东西，其实 CSS 计数器可让你根据内容在文档中的位置调整其显示的外观。例如，你可以使用计数器自动为网页中的标题编号，或者更改有序列表的编号
+
+## [ol-有序列表](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/ol)
+
+所谓有序列表，就是有顺序的列表。有序列表可以是数字的或字母的，通过[`type`](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/ol#attr-type)属性来设置编号的类型，通过[`list-type`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/list-style)来设置编号样式,一般用在`<ul>`标签，不过很少用在`<ol>`，话不多说，直接上代码
+
+<Details summary={<summary>属性</summary>}>
+reversed
+
+此布尔值属性指定列表中的条目是否是倒序排列的，即编号是否应从高到低反向标注。
+
+start  
+一个整数值属性，指定了列表编号的起始值。此属性的值应为阿拉伯数字，尽管列表条目的编号类型 type 属性可能指定为了罗马数字编号等其他类型的编号。比如说，想要让元素的编号从英文字母 "d" 或者罗马数字 "iv" 开始，都应当使用 start="4"。  
+**备注： 这个属性在 HTML4 中弃用，但是在 HTML5 中被重新引入。**
+
+type  
+设置编号的类型:
+a 表示小写英文字母编号  
+A 表示大写英文字母编号  
+i 表示小写罗马数字编号  
+I 表示大写罗马数字编号
+1 表示数字编号（默认）编号类型适用于整个列表，除非在 `<ol>` 元素的 `<li>` 元素中使用不同的 type 属性。
+
+</Details>
+
+### 演示
+
+```html live
+<>
+<div>通过type属性设置编号类型</div>
+<ol>
+    <li>第一行</li>
+    <li>第二行</li>
+    <li>第三行</li>
+</ol>
+<ol type="A">
+    <li>第一行</li>
+    <li>第二行</li>
+    <li>第三行</li>
+</ol>
+<ol type="I">
+    <li>第一行</li>
+    <li>第二行</li>
+    <li>第三行</li>
+</ol>
+</>
+```
+
+好了这时我就想，一定要使用`<ol>` 标签才能出成有序的列表么，当然不是，接着往下看
+
+## 计数器
+
+给无序的元素添加上序号，这就是我对自定义计数器的理解，啥叫<u>无序的元素</u>，为方便大伙理解，直接上代码吧
+
+```html
+<div id="mylist">
+  <h3>第一行</h3>
+  <h3>第二行</h3>
+  <h3>第三行</h3>
+  <h3>第四行</h3>
+  <h3>第五行</h3>
+</div>
+```
+
+上面示例代码中`<h3>` 标签接连出现，如果现在需求来了，我需要在`<h3>`前面添加序号怎么办？有人说这不很简单么，秒秒钟就给你想出几条方案
+
+1. 直接手动在`<h3>` 标签前加入指定的序号
+
+   ```html
+   <div id="mylist">
+     1.
+     <h3>第一行</h3>
+     2.
+     <h3>第二行</h3>
+     3.
+     <h3>第三行</h3>
+     4.
+     <h3>第四行</h3>
+     5.
+     <h3>第五行</h3>
+   </div>
+   ```
+
+2. 直接将 div->ol; h3->li 再添加上样式
+   ```html
+   <ol id="mylist">
+     <li>第一行</li>
+     <li>第二行</li>
+     <li>第三行</li>
+     <li>第四行</li>
+     <li>第五行</li>
+   </ol>
+   ```
+
+行了，小伙，你还是洗洗睡吧，需求稍微一变，你就又要改标签了，而且如果我想要展示非默认的序号样式，你准备怎么搞。改标签很简单，但是，我们应该本着能 css 解决的就尽量使用 css 解决的原则来处理需求
+
+:::tip
+在使用计数器之前，必须使用 [`counter-reset`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/counter-reset) 属性初始化计数器的值。计数器可通过 [`counter-increment`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/counter-increment) 属性指定其值为递增或递减。当前计数器的值可通过 [`counter()`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/counter) 或 [`counters()`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/counters) 函数显示出来，这通常会在伪元素的 `content` 属性中使用。
+
+请注意，计数器只能在可以生成盒子的元素中使用（设置或重设值、递增）。例如，如果一个元素被设置为了 display: none，那么在这个元素上的任何计数器操作都会被忽略。
+:::
+
+计数器属性都是配合使用的，主要需要用到 `counter-reset`，`counter-increment`，`counter()`，下面就分别对这三个属性进行简单介绍
+
+### [counter-reset](https://developer.mozilla.org/zh-CN/docs/Web/CSS/counter-reset)
+
+counter-reset 顾名思义在指定容器元素上重置创建给定名字[counter-name]的计数器, 计数器可能增加也可能减少. 可以给定初始计数器的值, 如果没有给, 默认为 0，可以创建多个
+
+#### 语法
+
+```css
+/* 创建名为"counter-name"的计数器，默认值为0 */
+counter-reset: counter-name;
+/* 创建名为"counter-name"的计数器，默认值为-1 */
+counter-reset: counter-name -1;
+/* 创建名为"counter1"的计数器，默认值为1;创建名为"counter2"的计数器，默认值为4 */
+counter-reset: counter1 1 counter2 4;
+```
+
+### [counter-increment](https://developer.mozilla.org/zh-CN/docs/Web/CSS/counter-increment)
+
+counter-increment:增加或减少 counter-reset 创建的计数器的值，使用在列表项元素上，即上面的`<h3>` 标签上，默认值为 1，正值为递增，负值为递减
+
+#### 语法
+
+```css
+counter-increment: counter-name;
+counter-increment: counter-name -1;
+counter-increment: counter 1 counter2 -4;
+```
+
+### [counter()](https://developer.mozilla.org/zh-CN/docs/Web/CSS/counter)
+
+CSS 函数 counter()，返回一个代表计数器的当前值的字符串。它通常和伪元素`content`搭配使用，但是理论上可以在支持`<string>`值的任何地方使用。
+
+#### 语法
+
+```css
+/* countername 为 counter-reset属性定义的名称*/
+counter(countername);
+/* counter-style 为编号样式 */
+counter(countername, counter-style)
+```
+
+## 演示
+
+<BrowserWindow>
+<Tabs>
+  <TabItem value='tsx' label='tsx'>
+    <CodeBlock language='tsx'>{CounterDemoSource}</CodeBlock>
+  </TabItem>
+   <TabItem value='scss' label='scss'>
+    <CodeBlock language='scss'>{CounterDemoSourceStyle}</CodeBlock>
+  </TabItem>
+</Tabs>
+<CounterDemo/>
+</BrowserWindow>
+
