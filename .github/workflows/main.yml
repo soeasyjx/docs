@@ -1,7 +1,11 @@
 name: 自动打包文档
 run-name: ${{ github.actor }} 文档自动打开发布工作流
 on:
-  push
+  push:
+    paths:
+      - ".github/workflows/*.yml"
+      - "packages/**/*.{md,mdx,tsx,js}"
+      - "packages/**/styles.modules.css"
 jobs:
   install-pnpm:
     runs-on: ubuntu-latest
