@@ -10,7 +10,13 @@ jobs:
         with:
           node-version: '16'
       - run: npm install -g pnpm
-      - run: pnpm -v
-      - name: 打包文档
-        uses: actions/checkout@v3
-      - run: pnpm build-webdoc
+      - run: |
+          pnpm -v
+          pnpm install
+  build-docs:
+      needs: install-pnpm
+      runs-on: ubuntu-latest
+      steps:
+        - name: 打包文档
+          uses: actions/checkout@v3
+        - run: pnpm build-webdoc
