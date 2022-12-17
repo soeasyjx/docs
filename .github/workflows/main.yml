@@ -5,13 +5,12 @@ jobs:
   install-pnpm:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-node@v3
+      - name: init
+        uses: actions/setup-node@v3
         with:
           node-version: '16'
       - run: npm install -g pnpm
       - run: pnpm -v
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - run: pnpm build-webdoc
+      - name: build
+        uses: actions/checkout@v3
+      - run: pnpm -v
