@@ -15,9 +15,5 @@ jobs:
       - run: |
           pnpm -v
           pnpm install
-  build-docs:
-      needs: install-pnpm
-      runs-on: ubuntu-latest
-      steps:
-        - name: 打包文档
-          run: pnpm -v
+      - name: 打包文档
+        run: pnpm build-webdoc
