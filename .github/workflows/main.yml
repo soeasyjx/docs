@@ -3,8 +3,7 @@ run-name: ${{ github.actor }} 文档自动打开发布工作流
 on:
   push:
     paths:
-      - "webdoc/**"
-      - "typescriptdoc/**"
+      - "packages"
 jobs:
   install-pnpm:
     runs-on: ubuntu-latest
