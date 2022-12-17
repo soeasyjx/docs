@@ -11,10 +11,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '16'
-          cache: 'npm'
       - run: npm install -g pnpm
       - run: |
           pnpm -v
           pnpm install
+      - name: cache node_modules
+        uses: actions/cache@v3
+        with: 
+          path: |
+            "**/node_modules"
       - name: 打包文档
         run: pnpm build-webdoc
