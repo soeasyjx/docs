@@ -28,3 +28,8 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}  
       - name: 打包文档
         run: pnpm build-webdoc
+      - name: 上传文档
+        uses: actions/upload-artifact@v3
+        with:
+          name: mywebdoc
+          path: /home/runner/work/docs/docs/packages/webdoc/build/
