@@ -20,5 +20,6 @@ jobs:
         with: 
           path: |
             "**/node_modules"
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm.lock') }}  
       - name: 打包文档
         run: pnpm build-webdoc
