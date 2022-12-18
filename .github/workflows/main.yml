@@ -39,7 +39,7 @@ jobs:
     needs: install-pnpm
     steps:
       - name: 下载文档
-        uses: actions/upload-artifact@v3
+        uses: actions/download-artifact@v3
         with:
           name: mywebdoc
           path: ${{github.workspace}}/build
