@@ -36,6 +36,7 @@ jobs:
           retention-days: 1
   publish-server:
     runs-on: ubuntu-latest
+    needs: install-pnpm
     steps:
       - name: 下载文档
         uses: actions/upload-artifact@v3
