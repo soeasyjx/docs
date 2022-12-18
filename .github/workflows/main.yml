@@ -4,8 +4,7 @@ on:
   push:
     paths:
       - ".github/workflows/*.yml"
-      - "packages/**/*.{md,mdx,tsx,js}"
-      - "packages/**/styles.modules.css"
+      - "packages/**/*.*"
 jobs:
   install-pnpm:
     runs-on: ubuntu-latest
