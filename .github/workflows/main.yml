@@ -32,4 +32,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: mywebdoc
-          path: /home/runner/work/docs/docs/packages/webdoc/build/
+          path: ${{github.workspace}}/packages/webdoc/build/
