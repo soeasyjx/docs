@@ -33,3 +33,14 @@ jobs:
         with:
           name: mywebdoc
           path: ${{github.workspace}}/packages/webdoc/build/
+          retention-days: 1
+  publish-server:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 下载文档
+        uses: actions/upload-artifact@v3
+        with:
+          name: mywebdoc
+          path: ${{github.workspace}}/build
+      - name: Display structure of downloaded files
+        run: ls -R    
