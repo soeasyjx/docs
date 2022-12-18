@@ -10,7 +10,7 @@ import TabItem from "@theme/TabItem";
 
 ## 前言
 
-在开发中我们常用 css 的 [animation](https://developer.mozilla.org/zh-CN/docs/Web/CSS/animation) 来为元素添加一个`Single animation`或`Multiple animations`多个动画效果，今天我们来讲解一下如果为一个元素添加多组动画
+在开发中我们常用 css 的 [animation](https://developer.mozilla.org/zh-CN/docs/Web/CSS/animation) 来为元素添加一个`Single animation`或`Multiple animations`多个动画效果，今天我们来讲解一下如果为一个元素添加多组动画。
 
 ## 属性
 
