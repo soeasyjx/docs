@@ -15,17 +15,17 @@ jobs:
       - name: 初始化node环境
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: "16"
       - run: npm install -g pnpm
       - run: |
           pnpm -v
           pnpm install
       - name: cache node_modules
         uses: actions/cache@v3
-        with: 
+        with:
           path: |
             "**/node_modules"
-          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}  
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
       - name: 打包文档
         run: pnpm build-webdoc
       - name: 上传文档
@@ -42,6 +42,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: mywebdoc
-          path: ${{github.workspace}}/build
-      - name: Display structure of downloaded files
-        run: ls -R    
+          path: ${{github.workspace}}/webdocbuild
+      - name: 布署到腾讯去服务器
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          REMOTE_USER: ${{secrets.REMOTE_USER}}
+          REMOTE_HOST: ${{secrets.REMOTE_HOST}}
+          SOURCE: ${{github.workspace}}/webdocbuild/
+          TARGET: "/www/doc/webdoc"
