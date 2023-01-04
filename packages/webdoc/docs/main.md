@@ -6,6 +6,6 @@ sidebar_position: 1
 
 ```ts twoslash
 function padLeft(padding: number | string, input: string): string {
-  throw new Error("Not implemented yet!11111111");
+  throw new Error("Not implemented yet!11111111333");
 }
 ```

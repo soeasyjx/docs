@@ -32,7 +32,7 @@ const config = {
     locales: ["zh-CN"]
   },
   plugins: ["docusaurus-plugin-sass", "@docusaurus/theme-live-codeblock"],
-  //   themes: ["@docusaurus/theme-search-algolia"],
+//   themes: ["@docusaurus/theme-search-algolia"],
   presets: [
     [
       "classic",
@@ -111,14 +111,41 @@ const config = {
             //   }
             ]
           },
+           {
+            type: 'search',
+            position: 'right',
+          },
           {
-            href: "https://gitee.com/soeasyjx/docs.git",
-            label: "gitee",
-            position: "right"
+            href: 'https://github.com/soeasyjx/docs.git',
+            position: 'right',
+            className: 'header-github-link',
+            'aria-label': 'GitHub repository',
           }
         ]
       },
       //   autoCollapseSidebarCategories: true,
+      algolia: {
+        // Algolia 提供的应用 ID
+        appId: 'TQOT3BZ0AD',
+  
+        //  公开 API 密钥：提交它没有危险
+        apiKey: 'cee9d42984da53e734d7186db1065a9c',
+  
+        indexName: 'webdoc',
+  
+        // // 可选：见下文
+        // contextualSearch: true,
+  
+        // // 可选：声明哪些域名需要用 window.location 型的导航而不是 history.push。 适用于 Algolia 配置会爬取多个文档站点，而我们想要用 window.location.href 在它们之间跳转时。
+        // externalUrlRegex: 'external\\.com|domain\\.com',
+  
+        // // 可选：Algolia 搜索参数
+        // searchParameters: {},
+  
+        // // 可选：搜索页面的路径，默认启用（可以用 `false` 禁用）
+        // searchPagePath: 'search',
+  
+      },
       docs: {
         sidebar: {
           autoCollapseCategories: true,

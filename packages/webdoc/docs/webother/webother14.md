@@ -3,7 +3,7 @@ title: gitignore模板
 ---
 
 ## 前言
-提供一份gitignore模板，在以后项目中可以直接复制使用
+提供一份gitignore模板，在以后项目中可以直接复制使用.!!
 
 ```md
 # Logs
