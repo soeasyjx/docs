@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start-webdoc": "pnpm --filter=webdoc run start",
-    "build-webdoc": "pnpm --filter=webdoc run build",
-    "start-ts": "pnpm --filter=typescriptdoc run start",
-    "build-ts": "pnpm --filter=typescriptdoc run build",
+    "start-webdoc": "npm -w webdoc run start",
+    "build-webdoc": "npm -w webdoc run build",
+    "start-ts": "npm -w typescriptdoc run start",
+    "build-ts": "npm -w typescriptdoc run build",
     "prepare": "husky install"
   },
   "devDependencies": {
@@ -18,5 +18,9 @@
   },
   "keywords": [],
   "author": "jiangxin3",
-  "license": "ISC"
+  "license": "ISC",
+  "workspaces":[
+    "packages/typescriptdoc",
+    "packages/webdoc"
+  ]
 }
