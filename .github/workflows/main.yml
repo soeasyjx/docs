@@ -8,7 +8,7 @@ on:
       - ".github/workflows/*.yml"
       - "packages/**/*.*"
 jobs:
-  install-pnpm:
+  install-npm:
     runs-on: ubuntu-latest
     steps:
       - name: checkout_actions
@@ -17,18 +17,22 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "16"
-      - run: npm install -g pnpm
+      # - run: npm install -g pnpm
+      # - run: |
+      #     pnpm -v
+      #     pnpm install
       - run: |
-          pnpm -v
-          pnpm install
-      - name: cache node_modules
-        uses: actions/cache@v3
-        with:
-          path: |
-            "**/node_modules"
-          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          npm -v
+          npm install
+      # - name: cache node_modules
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: |
+      #       "**/node_modules"
+      #     key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
       - name: 打包文档
-        run: pnpm build-webdoc
+        # run: pnpm build-webdoc
+        run: npm build-webdoc
       - name: 上传文档
         uses: actions/upload-artifact@v3
         with:
@@ -37,7 +41,7 @@ jobs:
           retention-days: 1
   publish-server:
     runs-on: ubuntu-latest
-    needs: install-pnpm
+    needs: install-npm
     steps:
       - name: 下载文档
         uses: actions/download-artifact@v3
