@@ -17,7 +17,7 @@
     "lint-staged": "^13.0.3"
   },
   "keywords": [],
-  "author": "jiangxin11",
+  "author": "jiangxin10",
   "license": "ISC",
   "workspaces":[
     "packages/typescriptdoc",
