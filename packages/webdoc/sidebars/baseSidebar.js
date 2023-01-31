@@ -31,7 +31,7 @@ module.exports = {
     "css/countdown",
     "css/lineheight"
   ],
-  html: ["html/picture", "html/template"],
+  html: ["html/picture", "html/template","html/safelybreak"],
   webother: [
     "webother/webother1",
     "webother/webother2",
