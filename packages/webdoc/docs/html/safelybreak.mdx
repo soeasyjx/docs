@@ -1,0 +1,34 @@
+---
+title: HTML 中安全地断开长单词的两种方法
+---
+
+## 使用wbr标签
+
+该`<wbr>`标签代表“分词机会”，它是一个非语义标签，告诉浏览器在指定点分词。所以，如果你有一个像这样的长词，`supercalifragilisticexpialidocious`并且你想根据视口的宽度在某个字符处将它打断，你可以`<wbr>`像这样使用标签来做到这一点
+
+```html
+<p>super<wbr>califragilistic<wbr>expialidocious</p>
+```
+
+这将智能地在可能溢出容器的**r**和**c**字符处断开单词,所以，浏览器会打破这个词并像这样呈现它
+
+<iframe allowfullscreen="true" allowpaymentrequest="true" allowtransparency="true" class="cp_embed_iframe " frameborder="0" height="300" width="100%" name="cp_embed_1" scrolling="no" src="https://codepen.io/amit_merchant/embed/BaPmwZR?height=300&amp;theme-id=dark&amp;default-tab=html%2Cresult&amp;slug-hash=BaPmwZR&amp;user=amit_merchant&amp;name=cp_embed_1" style={{"width": "100%","overflow":"hidden","display":"block"}} title="代码笔嵌入" loading="lazy" id="cp_embed_BaPmwZR"></iframe><br/>
+
+
+:::caution
+请注意，这个词只会在需要的地方被打断，**而不是在每个使用它`<wbr>`的地方都被打断**
+:::
+
+## 使用&shy;
+
+该`&shy;`是一个不间断的连字符，它告诉浏览器在指定的位置断开单词。所以，如果你有一个像这样的长词supercalifragilisticexpialidocious并且你想用连字符`-`在某个字符处打破它，你可以通过&shy;像这样使用实体来做到这一点
+
+```html
+<p>super&shy;califragilistic&shy;expialidocious</p>
+```
+
+这将智能地在可能溢出容器的**r**和**c**字符处断开单词，因此，浏览器会用连字符 (-) 来分隔单词，并像这样呈现它
+
+<iframe allowfullscreen="true" allowpaymentrequest="true" allowtransparency="true" class="cp_embed_iframe " frameborder="0" height="300" width="100%" name="cp_embed_2" scrolling="no" src="https://codepen.io/amit_merchant/embed/QWBOqOQ?height=300&amp;theme-id=dark&amp;default-tab=html%2Cresult&amp;slug-hash=QWBOqOQ&amp;user=amit_merchant&amp;name=cp_embed_2" style={{width: "100%", overflow:"hidden", display:"block"}} title="代码笔嵌入" loading="lazy" id="cp_embed_QWBOqOQ"></iframe><br/>
+
+如您所见，该词`-`根据使用`&shy;`实体的字符用连字符 (-) 分隔，并且它也仅在需要的地方分隔
