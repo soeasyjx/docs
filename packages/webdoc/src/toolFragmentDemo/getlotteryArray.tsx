@@ -29,9 +29,9 @@ const randomIntArrayInRange = (
   count: number,
   redball: IRandomIntArrayInRangeParams
 ) => {
-  const res = new Array<number[]>();
+  const res = new Array<string[]>();
   for (let index = 0; index < count; index++) {
-    const numberarr = new Array<number>();
+    const numberarr = new Array<string>();
     while (numberarr.length < redball.length) {
       const num = randomNumber(redball.min, redball.max);
 
@@ -39,7 +39,10 @@ const randomIntArrayInRange = (
 
       numberarr.push(num);
     }
-    numberarr.sort((prev, current) => prev - current);
+    numberarr.sort(
+      (prev, current) =>
+        Number.parseInt(prev, 10) - Number.parseInt(current, 10)
+    );
 
     if (redball.type == LuckTypeEnum.双色球) {
       const blueball = randomNumber(1, 16);
@@ -47,7 +50,7 @@ const randomIntArrayInRange = (
     }
 
     if (redball.type == LuckTypeEnum.大乐透) {
-      const blues: Array<number> = [];
+      const blues: Array<string> = [];
 
       for (let index = 0; index < 2; index++) {
         const num = randomNumber(1, 12);
@@ -59,7 +62,7 @@ const randomIntArrayInRange = (
 
         blues.push(num);
       }
-      blues.sort((a, b) => a - b);
+      blues.sort((a, b) => Number.parseInt(a) - Number.parseInt(b));
       //   const blueball1 = randomNumber(1, 12);
       //   const blueball2 = randomNumber(1, 12);
       //   const blues = [blueball1, blueball2].sort((a, b) => a - b);
@@ -72,14 +75,14 @@ const randomIntArrayInRange = (
   return res;
 };
 
-const Flag = (props: { className?: string; children: number }) => {
+const Flag = (props: { className?: string; children: string }) => {
   return (
     <span className={"flag " + (props.className ?? "")}>{props.children}</span>
   );
 };
 
 export const GetlotteryArrayDemo = () => {
-  const [nums, setNums] = React.useState<number[][]>([]);
+  const [nums, setNums] = React.useState<string[][]>([]);
   const restHandle = () => {
     setNums(
       randomIntArrayInRange(4, {
@@ -108,7 +111,7 @@ export const GetlotteryArrayDemo = () => {
 };
 
 export const GetlotteryArrayDemo2 = () => {
-  const [nums, setNums] = React.useState<number[][]>([]);
+  const [nums, setNums] = React.useState<string[][]>([]);
   const restHandle = () => {
     setNums(
       randomIntArrayInRange(1, {
