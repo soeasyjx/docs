@@ -1,3 +1,63 @@
+# name: 自动打包文档
+# run-name: ${{ github.actor }} 文档自动打开发布工作流
+# on:
+#   push:
+#     branches:
+#       - "main"
+#     paths:
+#       - ".github/workflows/*.yml"
+#       - "packages/**/*.*"
+# jobs:
+#   install-npm:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: checkout_actions
+#         uses: actions/checkout@v3
+#       - name: 初始化node环境
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: "16"
+#       # - run: npm install -g pnpm
+#       # - run: |
+#       #     pnpm -v
+#       #     pnpm install
+#       - run: |
+#           npm -v
+#           npm install
+#       # - name: cache node_modules
+#       #   uses: actions/cache@v3
+#       #   with:
+#       #     path: |
+#       #       "**/node_modules"
+#       #     key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+#       - name: 打包文档
+#         # run: pnpm build-webdoc
+#         run: npm run build-webdoc
+#       - name: 上传文档
+#         uses: actions/upload-artifact@v3
+#         with:
+#           name: mywebdoc
+#           path: ${{github.workspace}}/packages/webdoc/build/
+#           retention-days: 1
+#   publish-server:
+#     runs-on: ubuntu-latest
+#     needs: install-npm
+#     steps:
+#       - name: 下载文档
+#         uses: actions/download-artifact@v3
+#         with:
+#           name: mywebdoc
+#           path: ${{github.workspace}}/webdocbuild
+#       - name: 布署到腾讯去服务器
+#         uses: easingthemes/ssh-deploy@main
+#         env:
+#           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+#           REMOTE_USER: ${{secrets.REMOTE_USER}}
+#           REMOTE_HOST: ${{secrets.REMOTE_HOST}}
+#           SOURCE: ./webdocbuild/
+#           TARGET: "/www/doc/webdoc"
+
+
 name: 自动打包文档
 run-name: ${{ github.actor }} 文档自动打开发布工作流
 on:
@@ -9,52 +69,5 @@ on:
       - "packages/**/*.*"
 jobs:
   install-npm:
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout_actions
-        uses: actions/checkout@v3
-      - name: 初始化node环境
-        uses: actions/setup-node@v3
-        with:
-          node-version: "16"
-      # - run: npm install -g pnpm
-      # - run: |
-      #     pnpm -v
-      #     pnpm install
-      - run: |
-          npm -v
-          npm install
-      # - name: cache node_modules
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: |
-      #       "**/node_modules"
-      #     key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-      - name: 打包文档
-        # run: pnpm build-webdoc
-        run: npm run build-webdoc
-      - name: 上传文档
-        uses: actions/upload-artifact@v3
-        with:
-          name: mywebdoc
-          path: ${{github.workspace}}/packages/webdoc/build/
-          retention-days: 1
-      - name: 打印信息
-        run: echo "${{github.workspace}}">>>>>>>>444444
-  # publish-server:
-  #   runs-on: ubuntu-latest
-  #   needs: install-npm
-  #   steps:
-  #     - name: 下载文档
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         name: mywebdoc
-  #         path: ${{github.workspace}}/webdocbuild
-  #     - name: 布署到腾讯去服务器
-  #       uses: easingthemes/ssh-deploy@main
-  #       env:
-  #         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-  #         REMOTE_USER: ${{secrets.REMOTE_USER}}
-  #         REMOTE_HOST: ${{secrets.REMOTE_HOST}}
-  #         SOURCE: ./webdocbuild/
-  #         TARGET: "/www/doc/webdoc"
+    uses: ./.github/workflows/common.yml
+    with: webdoc
