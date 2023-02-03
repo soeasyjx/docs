@@ -70,4 +70,5 @@ on:
 jobs:
   install-npm:
     uses: ./.github/workflows/common.yml
-    with: webdoc
+    with: 
+      docname: webdoc
