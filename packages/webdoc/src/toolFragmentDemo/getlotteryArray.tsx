@@ -95,7 +95,7 @@ export const GetlotteryArrayDemo = () => {
   };
   return (
     <>
-      <input type="button" value="点击获取您的幸运号" onClick={restHandle} />
+      <input className="luckbutton" type="button" value="点击获取您的幸运号" onClick={restHandle} />
       {nums.map((item) => {
         return (
           <div className="lotterypanel">
@@ -124,7 +124,7 @@ export const GetlotteryArrayDemo2 = () => {
   };
   return (
     <>
-      <input type="button" value="点击获取您的幸运号" onClick={restHandle} />
+      <input className="luckbutton" type="button" value="点击获取您的幸运号" onClick={restHandle} />
       {nums.map((item) => {
         return (
           <div className="lotterypanel">
