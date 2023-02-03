@@ -6,6 +6,13 @@ on:
       docname:
         required: true
         type: string
+    secrets:
+      SSH_PRIVATE_KEY:
+        required: true
+      REMOTE_USER:
+        required: true
+      REMOTE_HOST:
+        required: true    
 jobs:
   install-npm:
     runs-on: ubuntu-latest
@@ -21,21 +28,21 @@ jobs:
           npm install
       - name: 打包 ${{ inputs.docname }} 文档
         run: npm run build-webdoc
-      - name: 上传文档
+      - name: 上传${{inputs.docname}}文档
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ inputs.docname}}
+          name: ${{ inputs.docname }}
           path: ${{github.workspace}}/packages/${{ inputs.docname }}/build/
           retention-days: 1
   publish-server:
     runs-on: ubuntu-latest
     needs: install-npm
     steps:
-      - name: 下载文档
+      - name: 下载${{inputs.docname}}文档
         uses: actions/download-artifact@v3
         with:
-          name: ${{ inputs.docname}}
-          path: ${{github.workspace}}/${{ inputs.docname}}
+          name: ${{ inputs.docname }}
+          path: ${{github.workspace}}/${{ inputs.docname }}
       - name: 布署到腾讯去服务器
         uses: easingthemes/ssh-deploy@main
         env:
