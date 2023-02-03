@@ -1,0 +1,21 @@
+.lotterypanel {
+    margin-top: 10px;
+
+    .flag {
+        color: #f54646;
+        border: 2px solid #fe7d7c;
+        border-radius: 50%;
+        display: inline-block;
+        height: 32px;
+        width: 32px;
+        line-height: 32px;
+        text-align: center;
+        margin-right: 8px;
+        box-sizing: content-box;
+    }
+
+    .blue {
+        color: #39f;
+        border-color: #4aa6f4;
+    }
+}

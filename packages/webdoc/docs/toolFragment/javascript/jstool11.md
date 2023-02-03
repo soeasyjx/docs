@@ -1,5 +1,5 @@
 ---
-title: 随便获取数组元素
+title: 随机获取数组元素
 ---
 
 import {GetRandomItemDeom} from "@site/src/toolFragmentDemo/getRandomArray";
