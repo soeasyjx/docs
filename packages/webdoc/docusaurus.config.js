@@ -126,12 +126,13 @@ const config = {
       //   autoCollapseSidebarCategories: true,
       algolia: {
         // Algolia 提供的应用 ID
-        appId: 'TQOT3BZ0AD',
+        appId: 'RJX07KU35V',
   
         //  公开 API 密钥：提交它没有危险
-        apiKey: 'cee9d42984da53e734d7186db1065a9c',
+        apiKey: '56240d7fb5a3e6f9796c3749bffd535a',
   
-        indexName: 'webdoc',
+        indexName: 'indexwebdoc',
+        contextualSearch: true,
   
         // // 可选：见下文
         // contextualSearch: true,
