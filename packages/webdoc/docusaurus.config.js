@@ -99,7 +99,7 @@ const config = {
             type: "dropdown",
             label: "前端大杂烩",
             items: [
-              { href:"http://easycli.cn:8891/doc/typescriptdoc/category/%E7%AE%80%E4%BB%8B", label: "TypeScript" },
+              { href:"http://easycli.cn:8890/doc/typescriptdoc/category/%E7%AE%80%E4%BB%8B", label: "TypeScript" },
             //   { to: "/node/aaa", label: "Node" },
             //   { to: "/node/aaa", label: "svg/canvas" },
               //   { type: "doc",docId: "compile/index", label: "打包编译" },
