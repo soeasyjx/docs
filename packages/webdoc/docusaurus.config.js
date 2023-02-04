@@ -78,10 +78,10 @@ const config = {
       },
       navbar: {
         title: "猿极客",
-        logo: {
-          alt: "My Site Logo",
-          src: "img/logo.svg"
-        },
+        // logo: {
+        //   alt: "My Site Logo",
+        //   src: "img/logo.svg"
+        // },
         items: [
           {
             type: "doc",
