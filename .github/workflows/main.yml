@@ -72,7 +72,9 @@ jobs:
       runs-on: ubuntu-latest
       steps:
          - name: 打包 xxxx 文档
-           run: echo "${{ github.event.commits[0].message }}" fdsafdsafdsafdsafdsa
+           run: 
+            echo "${{ github.event.commits[0].message }}" aa
+            echo "${{ github.event_path }}" bb
   # install-npm:
   #   uses: ./.github/workflows/common.yml
   #   with: 
