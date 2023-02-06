@@ -87,4 +87,13 @@ jobs:
     secrets:
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       REMOTE_USER: ${{secrets.REMOTE_USER}}
-      REMOTE_HOST: ${{secrets.REMOTE_HOST}}    
+      REMOTE_HOST: ${{secrets.REMOTE_HOST}}
+  componentjob:
+    if: contains(github.event.commits[0].message,'server') && contains(github.event.commits[0].message,'componentoc')
+    uses: ./.github/workflows/common.yml
+    with: 
+      docname: componentoc
+    secrets:
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      REMOTE_USER: ${{secrets.REMOTE_USER}}
+      REMOTE_HOST: ${{secrets.REMOTE_HOST}}       

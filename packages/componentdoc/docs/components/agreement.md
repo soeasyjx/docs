@@ -155,4 +155,4 @@ const AgreementDemo: FC<{}> = () => {
 - 支持PDF文档阅读
 
 `Version：1.0.4`
-* 支持自定义协议模板
+* 支持自定义协议模板;

@@ -32,6 +32,9 @@ jobs:
       - name: 打包 ${{ inputs.docname }} 文档 
         if: inputs.docname=='typescriptdoc'
         run: npm run build-ts
+      - name: 打包 ${{ inputs.docname }} 文档 
+        if: inputs.docname=='componentdoc'
+        run: npm run build-componentdoc  
       - name: 上传${{ inputs.docname }}文档
         uses: actions/upload-artifact@v3
         with:
