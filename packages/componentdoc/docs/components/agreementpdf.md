@@ -148,4 +148,4 @@ const AgreementDemo: FC<{}> = () => {
 
 `Version：1.0.4`
 
-- 支持自定义协议模板
+- 支持自定义协议模板;
