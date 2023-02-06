@@ -68,7 +68,7 @@ on:
       - ".github/workflows/*.yml"
       - "packages/**/*.*"
 env:
-  commitmessage: github.event.commits[0].message   
+  commitmessage: ${{ github.event.commits[0].message  }}
 jobs:
     test1111:
       runs-on: ubuntu-latest
