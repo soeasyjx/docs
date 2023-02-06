@@ -67,18 +67,14 @@ on:
     paths:
       - ".github/workflows/*.yml"
       - "packages/**/*.*"
+env:
+  commitmessage: github.event.commits[0].message   
 jobs:
     test1111:
       runs-on: ubuntu-latest
       steps:
          - name: 打包 xxxx 文档
-           run: echo "${{ github.event.commits[0].message }}" aa
-         -  run: echo "${{ github.event.commits[0].url }}" bb
-         -  run: echo "${{ github.event_path }}" dd
-         - name: 使用toJSON
-           env:
-            xxxx11: ${{ toJSON(github.event.commits) }}
-           run: echo "$xxxx11" dd00
+           run: echo "commitmessage"
   # install-npm:
   #   uses: ./.github/workflows/common.yml
   #   with: 
