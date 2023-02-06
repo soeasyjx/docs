@@ -6,7 +6,7 @@ import Thumbnail from '@site/src/components/Thumbnail';
 
 ## 前言
 
-为什你应该使用`picture`标签而不是`img`标签
+为什你应该使用`picture`标签而不是`img`标签?
 
 在用户界面中使用图片和动画已经成为现代网络应用的一个普遍现象。尽管这些现代设计的重点是改善你的应用程序的用户体验，但如果这些图像对所有设备都没有响应，事情就会变得适得其反
 

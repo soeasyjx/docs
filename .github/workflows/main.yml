@@ -70,7 +70,7 @@ on:
 env:
   commitmessage: ${{ github.event.commits[0].message  }}
 jobs:
-  install-npm:
+  webdocjob:
     if: contains(github.event.commits[0].message,'server') && contains(github.event.commits[0].message,'webdoc')
     uses: ./.github/workflows/common.yml
     with: 
@@ -79,3 +79,12 @@ jobs:
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       REMOTE_USER: ${{secrets.REMOTE_USER}}
       REMOTE_HOST: ${{secrets.REMOTE_HOST}}
+  typescriptjob:
+    if: contains(github.event.commits[0].message,'server') && contains(github.event.commits[0].message,'typescriptdoc')
+    uses: ./.github/workflows/common.yml
+    with: 
+      docname: typescriptdoc
+    secrets:
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      REMOTE_USER: ${{secrets.REMOTE_USER}}
+      REMOTE_HOST: ${{secrets.REMOTE_HOST}}    
