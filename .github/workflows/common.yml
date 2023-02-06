@@ -34,7 +34,10 @@ jobs:
         run: npm run build-ts
       - name: 打包 ${{ inputs.docname }} 文档 
         if: inputs.docname=='componentdoc'
-        run: npm run build-componentdoc  
+        run: |
+          npm run build-componentdoc
+          cd ${{github.workspace}}/packages/${{ inputs.docname }}/build/ && rm -r -f ~demos
+
       - name: 上传${{ inputs.docname }}文档
         uses: actions/upload-artifact@v3
         with:
