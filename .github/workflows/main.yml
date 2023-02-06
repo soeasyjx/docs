@@ -75,7 +75,10 @@ jobs:
            run: echo "${{ github.event.commits[0].message }}" aa
          -  run: echo "${{ github.event.commits[0].url }}" bb
          -  run: echo "${{ github.event_path }}" dd
-         -  run: echo "${{ toJSON(github.event.commits) }}" dd00
+         - name: 使用toJSON
+           env:
+            xxxx11: ${{ toJSON(github.event.commits) }}
+           run: echo "$xxxx11" dd00
   # install-npm:
   #   uses: ./.github/workflows/common.yml
   #   with: 
