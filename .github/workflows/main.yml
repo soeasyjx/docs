@@ -75,7 +75,7 @@ jobs:
       runs-on: ubuntu-latest
       steps:
          - name: 打包 xxxx 文档
-           run: echo "$commitmessage"
+           run: echo "$commitmessage" e
   # install-npm:
   #   uses: ./.github/workflows/common.yml
   #   with: 
