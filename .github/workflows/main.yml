@@ -71,10 +71,11 @@ env:
   commitmessage: ${{ github.event.commits[0].message  }}
 jobs:
     test1111:
+      if: "contains($commitmessage,'server') && contains($commitmessage,'webdoc')"
       runs-on: ubuntu-latest
       steps:
          - name: 打包 xxxx 文档
-           run: echo "commitmessage"
+           run: echo "$commitmessage"
   # install-npm:
   #   uses: ./.github/workflows/common.yml
   #   with: 
