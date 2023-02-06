@@ -27,16 +27,17 @@ jobs:
           npm -v
           npm install
       - if: inputs.docname=='webdoc'
-        name: 打包 ${{ inputs.docname }} 文档
+        name: 打包 webdoc 文档
         run: npm run build-webdoc
       - if: inputs.docname=='typescriptdoc'
-        name: 打包 ${{ inputs.docname }} 文档
+        name: 打包 typescriptdoc 文档
         run: npm run build-ts
       - if: inputs.docname=='componentdoc'
-        name: 打包 ${{ inputs.docname }} 文档
+        name: 打包 componentdoc 文档
         run: |
           npm run build-componentdoc
-          cd ${{github.workspace}}/packages/${{ inputs.docname }}/build/ && rm -r -f ~demos
+          echo "执行删除~demo操作"
+          cd ${{github.workspace}}/packages/componentdoc/build/ && rm -r -f ~demos
 
       # - name: 打包 ${{ inputs.docname }} 文档
       #   if: inputs.docname=='webdoc'
