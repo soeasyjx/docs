@@ -96,6 +96,12 @@ const config = {
             position: "left"
           },
           {
+            // type:"doc",
+            label:"组件",
+            href: 'http://easycli.cn:8890/doc/componentdoc/',
+            position: 'left',
+          },
+          {
             type: "dropdown",
             label: "前端大杂烩",
             items: [
