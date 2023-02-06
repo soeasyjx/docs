@@ -195,7 +195,18 @@ npm run test -ws
 ```
 
 ## 注意
-npm workspace 默认是将依赖安装到根目录中的node_modules中，在子项目的package.json中添加相应的依赖包名称，这点跟pnpm workspace有点区别，pnpm 需要添加-w参数
+- npm workspace 默认是将依赖安装到根目录中的node_modules中，在子项目的package.json中添加相应的依赖包名称，这点跟pnpm workspace有点区别，pnpm 需要添加-w参数
+-  如果在根目录执行子包中的指令，出现如下错误：
+```bash
+> docusaurus@1.0.0 build-componentdoc
+> npm -w componentdoc run build
+
+npm ERR! No workspaces found:
+npm ERR!   --workspace=componentdoc
+
+npm ERR! A complete log of this run can be found in:
+```
+请检查对应子包的package.json文件name属性值是否正确，子包命名是根据该属性值来确定的，并不是子包文件夹名称
 
 ## 源码
 
