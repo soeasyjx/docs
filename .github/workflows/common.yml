@@ -27,7 +27,7 @@ jobs:
           npm -v
           npm install
       - name: 打包 ${{ inputs.docname }} 文档
-        run: npm run build-webdoc
+        run: "npm run build-webdoc"
       - name: 上传${{inputs.docname}}文档
         uses: actions/upload-artifact@v3
         with:

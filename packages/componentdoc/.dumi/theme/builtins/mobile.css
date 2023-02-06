@@ -1,0 +1,40 @@
+.demo-frame {
+  display: flex;
+  width: 100%;
+  /* transform: scale(0.7); */
+  margin-top: 30px;
+  margin-bottom: 30px;
+  height: 667px;
+  background-color: #fff;
+  -webkit-box-shadow: 0 4px 30px 0 rgb(4 59 85 / 10%);
+  -moz-box-shadow: 0 4px 30px 0 rgba(4, 59, 85, 0.1);
+  box-shadow: 0 4px 30px 0 rgb(4 59 85 / 10%);
+}
+
+.demo-frame iframe {
+  flex: none;
+  padding: 10px;
+  width: 375px;
+  height: 667px;
+  box-sizing: border-box;
+}
+
+.demo-frame .dumi-default-source-code {
+  overflow-x: auto;
+  flex: 1;
+  margin: 0;
+}
+.demo-frame .dumi-default-source-code::-webkit-scrollbar {
+  width: 0;
+}
+/* .demo-frame .iphone-frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 375px;
+    height: 758px;
+    background: url(/iframe_iphonex.png) no-repeat;
+    -moz-background-size: contain;
+    background-size: contain;
+    pointer-events: none;
+} */

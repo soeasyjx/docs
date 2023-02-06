@@ -21,7 +21,8 @@
   "license": "ISC",
   "workspaces": [
     "packages/typescriptdoc",
-    "packages/webdoc"
+    "packages/webdoc",
+    "packages/componentdoc"
   ],
   "dependencies": {
     "@docusaurus/core": "^2.3.1",
