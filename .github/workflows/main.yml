@@ -74,12 +74,12 @@ jobs:
     if: contains(github.event.commits[0].message,'server') && contains(github.event.commits[0].message,'webdoc')
     uses: ./.github/workflows/common.yml
     with: 
-      docname: webdoc
+      docname: ${{github.run_id}}
     secrets:
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       REMOTE_USER: ${{secrets.REMOTE_USER}}
       REMOTE_HOST: ${{secrets.REMOTE_HOST}}
-  typescriptjob:
+  typescriptdocjob:
     if: contains(github.event.commits[0].message,'server') && contains(github.event.commits[0].message,'typescriptdoc')
     uses: ./.github/workflows/common.yml
     with: 
@@ -88,11 +88,11 @@ jobs:
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       REMOTE_USER: ${{secrets.REMOTE_USER}}
       REMOTE_HOST: ${{secrets.REMOTE_HOST}}
-  componentjob:
-    if: contains(github.event.commits[0].message,'server') && contains(github.event.commits[0].message,'componentoc')
+  componentdocjob:
+    if: contains(github.event.commits[0].message,'server') && contains(github.event.commits[0].message,'componentdoc')
     uses: ./.github/workflows/common.yml
     with: 
-      docname: componentoc
+      docname: componentdoc
     secrets:
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       REMOTE_USER: ${{secrets.REMOTE_USER}}
