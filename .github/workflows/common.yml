@@ -26,17 +26,29 @@ jobs:
       - run: |
           npm -v
           npm install
-      - name: 打包 ${{ inputs.docname }} 文档
-        if: inputs.docname=='webdoc'
+      - if: inputs.docname=='webdoc'
+        name: 打包 ${{ inputs.docname }} 文档
         run: npm run build-webdoc
-      - name: 打包 ${{ inputs.docname }} 文档 
-        if: inputs.docname=='typescriptdoc'
+      - if: inputs.docname=='typescriptdoc'
+        name: 打包 ${{ inputs.docname }} 文档
         run: npm run build-ts
-      - name: 打包 ${{ inputs.docname }} 文档 
-        if: inputs.docname=='componentdoc'
+      - if: inputs.docname=='componentdoc'
+        name: 打包 ${{ inputs.docname }} 文档
         run: |
           npm run build-componentdoc
           cd ${{github.workspace}}/packages/${{ inputs.docname }}/build/ && rm -r -f ~demos
+
+      # - name: 打包 ${{ inputs.docname }} 文档
+      #   if: inputs.docname=='webdoc'
+      #   run: npm run build-webdoc
+      # - name: 打包 ${{ inputs.docname }} 文档 
+      #   if: inputs.docname=='typescriptdoc'
+      #   run: npm run build-ts
+      # - name: 打包 ${{ inputs.docname }} 文档 
+      #   if: inputs.docname=='componentdoc'
+      #   run: |
+      #     npm run build-componentdoc
+      #     cd ${{github.workspace}}/packages/${{ inputs.docname }}/build/ && rm -r -f ~demos
 
       - name: 上传${{ inputs.docname }}文档
         uses: actions/upload-artifact@v3
