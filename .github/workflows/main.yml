@@ -69,6 +69,7 @@ on:
       - "packages/**/*.*"
 env:
   commitmessage: ${{ github.event.commits[0].message  }}
+  run: echo "$commitmessage"
 jobs:
   webdocjob:
     if: contains(github.event.commits[0].message,'server') && contains(github.event.commits[0].message,'webdoc')
