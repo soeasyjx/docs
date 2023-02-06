@@ -70,8 +70,10 @@ on:
 env:
   commitmessage: ${{ github.event.commits[0].message  }}
 jobs:
+    bbbbb:
+      - run: echo env.commitmessage
     test1111:
-      if: ${{ contains("$commitmessage",'server') && contains("$commitmessage",'webdoc') }}
+      if: contains(env.commitmessage,'server') && contains(env.commitmessage,'webdoc')
       runs-on: ubuntu-latest
       steps:
          - name: 打包 xxxx 文档
