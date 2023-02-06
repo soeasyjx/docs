@@ -71,7 +71,9 @@ env:
   commitmessage: ${{ github.event.commits[0].message  }}
 jobs:
     bbbbb:
-      - run: echo env.commitmessage
+      runs-on: ubuntu-latest
+      steps:
+       - run: echo env.commitmessage
     test1111:
       if: contains(env.commitmessage,'server') && contains(env.commitmessage,'webdoc')
       runs-on: ubuntu-latest
