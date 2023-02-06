@@ -8,6 +8,8 @@
     "build-webdoc": "npm -w webdoc run build",
     "start-ts": "npm -w typescriptdoc run start",
     "build-ts": "npm -w typescriptdoc run build",
+    "start-componentdoc": "npm -w componentdoc run start",
+    "build-componentdoc": "npm -w componentdoc run build",
     "prepare": "husky install"
   },
   "devDependencies": {
