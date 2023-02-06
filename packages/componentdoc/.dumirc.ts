@@ -10,6 +10,7 @@ export default defineConfig({
   mfsu: false,
   base: '/doc/componentdoc/',
   publicPath: '/doc/componentdoc/',
+  outputPath:'build',
   themeConfig: {
     name: '猿极客',
     deviceWidth: 375,

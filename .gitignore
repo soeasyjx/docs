@@ -18,4 +18,6 @@ bin-release/
 # information for Eclipse / Flash Builder.
 node_modules
 dist
-.dumi/tmp
+build
+packages/**/.dumi/**
+!packages/componentdoc/.dumi/theme
