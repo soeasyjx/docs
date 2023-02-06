@@ -5,7 +5,7 @@ on:
     inputs:
       docname:
         required: true
-        type: string
+        type: string   
     secrets:
       SSH_PRIVATE_KEY:
         required: true
@@ -27,7 +27,8 @@ jobs:
           npm -v
           npm install
       - name: 打包 ${{ inputs.docname }} 文档
-        run: "npm run build-webdoc"
+        if: inputs.docname=='webdoc'
+        run: npm run build-webdoc
       - name: 上传${{inputs.docname}}文档
         uses: actions/upload-artifact@v3
         with:
