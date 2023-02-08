@@ -90,6 +90,12 @@ const config = {
             label: "前端技术"
           },
           {
+            type:"doc",
+            docId: "compile/index",
+            position: "left",
+            label: "编译相关"
+          },
+          {
             type: "doc",
             docId: "toolFragment/javascript/jstool1",
             label: "工具代码",
@@ -99,24 +105,30 @@ const config = {
             // type:"doc",
             label:"组件",
             href: 'http://easycli.cn:8890/doc/componentdoc/',
-            position: 'left',
+            position: 'right',
           },
           {
-            type: "dropdown",
-            label: "前端大杂烩",
-            items: [
-              { href:"http://easycli.cn:8890/doc/typescriptdoc/category/%E7%AE%80%E4%BB%8B", label: "TypeScript" },
-            //   { to: "/node/aaa", label: "Node" },
-            //   { to: "/node/aaa", label: "svg/canvas" },
-              //   { type: "doc",docId: "compile/index", label: "打包编译" },
-              { to: "compile", label: "打包编译" },
-            //   {
-            //     type: "doc",
-            //     docId: "微前端/qiankun/entry",
-            //     label: "微前端"
-            //   }
-            ]
+            // type:"doc",
+            label:"TS",
+            href: 'http://easycli.cn:8890/doc/typescriptdoc/category/%E7%AE%80%E4%BB%8B',
+            position: 'right',
           },
+        //   {
+        //     type: "dropdown",
+        //     label: "前端大杂烩",
+        //     items: [
+        //       { href:"http://easycli.cn:8890/doc/typescriptdoc/category/%E7%AE%80%E4%BB%8B", label: "TypeScript" },
+        //     //   { to: "/node/aaa", label: "Node" },
+        //     //   { to: "/node/aaa", label: "svg/canvas" },
+        //       //   { type: "doc",docId: "compile/index", label: "打包编译" },
+        //       { to: "compile", label: "编译相关" },
+        //     //   {
+        //     //     type: "doc",
+        //     //     docId: "微前端/qiankun/entry",
+        //     //     label: "微前端"
+        //     //   }
+        //     ]
+        //   },
            {
             type: 'search',
             position: 'right',

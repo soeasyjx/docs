@@ -5,7 +5,7 @@ hero:
   description: 组件文档
   actions:
     - text: 组件
-      link: /
+      link: /components/agreement
     - text: hook
-      link: /
+      link: /hook
 ---
