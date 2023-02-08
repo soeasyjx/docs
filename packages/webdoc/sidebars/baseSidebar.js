@@ -46,7 +46,8 @@ module.exports = {
     "webother/webother11",
     "webother/webother12",
     "webother/webother13",
-    "webother/webother14"
+    "webother/webother14",
+    "webother/webother15"
   ]
 };
 
