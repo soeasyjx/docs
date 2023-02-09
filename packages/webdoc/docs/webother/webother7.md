@@ -420,7 +420,7 @@ npm list -global
 npm list react
 ```
 
-还可以使用npm ls 命令来查看指定包的依赖信息
+还可以使用npm ls 命令来查看指定包的依赖信息， 同时也可以查看哪些包依赖了指定包
 ```bash
 npm ls react
 ```
