@@ -71,9 +71,10 @@ const config = {
         // },
         items: [
           {
-            href: "https://gitee.com/soeasyjx/docs.git",
-            label: "Gitee",
-            position: "right"
+            href: "https://github.com/soeasyjx/docs.git",
+            position: 'right',
+            className: 'header-github-link',
+            'aria-label': 'GitHub repository',
           }
         ]
       },

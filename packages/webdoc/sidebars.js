@@ -72,21 +72,25 @@ module.exports = {
     {
       type: "category",
       label: "javascript",
+      collapsible: false,
+      collapsed: false,
       link: {
         type: "generated-index",
         title: "目录总览"
       },
       items: [...toolFragmentSidebar.items]
+    },
+    {
+      type: "category",
+      label: "css",
+      collapsible: false,
+      collapsed: false,
+      link: {
+        type: "generated-index",
+        title: "目录总览"
+      },
+      items: [...toolFragmentSidebar.cssitems]
     }
-    // {
-    //   type: "category",
-    //   label: "css",
-    //   link: {
-    //     type: "generated-index",
-    //     title: "目录总览"
-    //   },
-    //   items: [{ type: "doc", id: "toolFragment/css/aaaa" }]
-    // }
   ],
   //   nodeSidebar: ["node/aaa", "node/bbb"],
   //   microSidebar: [
