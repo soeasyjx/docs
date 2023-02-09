@@ -1,5 +1,5 @@
 ---
-title: github action 系列1
+title: github action系列-npm publish
 ---
 
 ## 前言

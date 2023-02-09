@@ -1,0 +1,132 @@
+---
+title: react hooks工具
+---
+
+## useWindowSize
+
+> 获取窗口高和宽
+
+```jsx
+import { useState, useEffect } from "react";
+
+interface WindowSize {
+  width: number;
+  height: number;
+}
+
+const useWindowSize = (): WindowSize => {
+  const [windowSize, setWindowSize] =
+    useState <
+    WindowSize >
+    {
+      width: window.innerWidth,
+      height: window.innerHeight
+    };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  return windowSize;
+};
+```
+
+## useInterval
+
+> 定时器
+
+```jsx
+import { useState, useEffect, useRef } from "react";
+
+const useInterval = (callback: () => void, delay: number | null) => {
+  const savedCallback = useRef<() => void>();
+
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  useEffect(() => {
+    function tick() {
+      savedCallback.current && savedCallback.current();
+    }
+    if (delay !== null && delay > 0) {
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    } else {
+      tick();
+    }
+  }, [delay]);
+};
+```
+
+## useDebounce
+
+> 防抖
+
+```jsx
+import { useEffect, useRef } from "react";
+
+export function useDebounce(
+  callback: Function,
+  timeout: number = 200,
+  deps: Array<any> = []
+) {
+  const data = useRef({ firstTime: true });
+  useEffect(() => {
+    const { firstTime, clearFunc } = data.current;
+
+    const handler = setTimeout(() => {
+      if (clearFunc && typeof clearFunc === "function") {
+        clearFunc();
+      }
+      data.current.clearFunc = callback();
+    }, timeout);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [timeout, ...deps]);
+}
+
+export default useDebounce;
+```
+
+## useThrottle
+
+> 节流
+
+```jsx
+import { useEffect, useRef } from "react";
+
+export const useThrottle = (
+  callback: Function,
+  delay: number = 200,
+  deps: Array<any> = []
+) => {
+  const lastRan = useRef(Date.now());
+
+  useEffect(() => {
+    const handler = setTimeout(function () {
+      if (Date.now() - lastRan.current >= delay) {
+        callback();
+        lastRan.current = Date.now();
+      }
+    }, delay - (Date.now() - lastRan.current));
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [delay, ...deps]);
+};
+
+export default useThrottle;
+```

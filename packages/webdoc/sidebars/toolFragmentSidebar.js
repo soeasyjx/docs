@@ -18,6 +18,7 @@ module.exports = {
     "toolFragment/javascript/jstool10",
     "toolFragment/javascript/jstool11",
     "toolFragment/javascript/jstool12",
-    "toolFragment/javascript/jstool13"
+    "toolFragment/javascript/jstool13",
+    "toolFragment/javascript/jstool14"
   ]
 };
