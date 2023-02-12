@@ -17,6 +17,7 @@ export default defineConfig({
     nav: [
       { title: '组件', link: '/components/agreement' },
       { title: 'hook', link: '/hook' },
+      { title: '脚手架', link: '/cli/chiyoucli' },
     ],
     footer: false,
     logo: 'https://dumi-theme-chakra.deno.dev/dumi-theme-chakra-logo.png',
