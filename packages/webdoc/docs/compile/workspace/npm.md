@@ -188,6 +188,11 @@ npm run test -w child-a
   },
 ```
 
+### 移除子项目安装包
+```bash
+npm uninstall antd-style fast-deep-equal zustand -w componentdoc
+```
+
 ### 执行所有子项目的同名命令
 
 ```bash
