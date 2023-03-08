@@ -130,3 +130,27 @@ export const useThrottle = (
 
 export default useThrottle;
 ```
+
+## useUpdateEffect
+
+> 当依赖项更新的时候，执行逻辑（初始化时不算更新）
+
+```jsx
+const useUpdateEffect = function (effectCallback, deps = []) {
+  const isFirstMount = React.useRef(false);
+
+  React.useEffect(() => {
+    return () => {
+      isFirstMount.current = false;
+    };
+  }, []);
+  React.useEffect(() => {
+    // Do not execute effectcallback for the first time
+    if (!isFirstMount.current) {
+      isFirstMount.current = true;
+    } else {
+      return effectCallback();
+    }
+  }, deps);
+};
+```
