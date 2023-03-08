@@ -149,7 +149,8 @@ const config = {
         //  公开 API 密钥：提交它没有危险
         apiKey: '56240d7fb5a3e6f9796c3749bffd535a',
   
-        indexName: 'indexwebdoc',
+        // indexName: 'indexwebdoc',
+        indexNAme:'webdoc',
         contextualSearch: true,
   
         // // 可选：见下文
@@ -162,7 +163,7 @@ const config = {
         // searchParameters: {},
   
         // // 可选：搜索页面的路径，默认启用（可以用 `false` 禁用）
-        // searchPagePath: 'search',
+        searchPagePath: 'search',
   
       },
       docs: {

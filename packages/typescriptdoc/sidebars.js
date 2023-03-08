@@ -76,14 +76,14 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "生产",
+      label: "工具",
       collapsible: false,
       collapsed: true,
       link: {
         type: "generated-index",
         title: "目录总览"
       },
-      items: ["production/page1", "production/page2", "production/page3"]
+      items: ["production/page1", "production/page2", "production/page3","production/page4"]
     },
     {
       type: "category",
