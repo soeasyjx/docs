@@ -150,7 +150,7 @@ const config = {
         apiKey: '56240d7fb5a3e6f9796c3749bffd535a',
   
         // indexName: 'indexwebdoc',
-        indexNAme:'webdoc',
+        indexName:'webdoc',
         contextualSearch: true,
   
         // // 可选：见下文

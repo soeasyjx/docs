@@ -21,6 +21,10 @@ module.exports = {
     "toolFragment/javascript/jstool13",
     "toolFragment/javascript/jstool14"
   ],
-  cssitems: ["toolFragment/css/csstool1", "toolFragment/css/csstool2"]
+  cssitems: [
+    "toolFragment/css/csstool1",
+    "toolFragment/css/csstool2",
+    "toolFragment/css/csstool3"
+  ]
 };
 
