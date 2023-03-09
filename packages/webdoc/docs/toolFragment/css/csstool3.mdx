@@ -1,0 +1,44 @@
+---
+title: 最容易被忽视的css
+---
+
+## 前言
+
+整理一些容易被忽视，但使用简单，效果出奇的 css
+
+## [-webkit-text-stroke](https://developer.mozilla.org/zh-CN/docs/Web/CSS/-webkit-text-stroke)
+
+为文字添加轮廓
+
+-webkit-text-stroke 是 -webkit-text-stroke-width 和 -webkit-text-stroke-color 的简写属性
+
+```css
+.custom-headline {
+  color: transparent;
+  -webkit-text-stroke: 1px #04d939;
+}
+```
+
+## []:placeholder-shown](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:placeholder-shown)
+
+`<input> `或 `<textarea>`元素，尚未填写值，将突出显示
+
+```css
+input :placeholder-shown {
+  border-bottom: 2px solid #04d939;
+}
+```
+
+## [@media (hover: hover) and (pointer: fine)](https://www.smashingmagazine.com/2022/03/guide-hover-pointer-media-queries/)
+
+仅在非触摸设备(PC)上，添加悬停样式
+
+```css
+@media (hover: hover) and (pointer: fine) {
+  arrow:hover {
+    cursor: pointer;
+    color: #027333;
+    transform: translateX(0.5rem);
+  }
+}
+```
