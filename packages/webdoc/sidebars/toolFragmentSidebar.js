@@ -19,7 +19,8 @@ module.exports = {
     "toolFragment/javascript/jstool11",
     "toolFragment/javascript/jstool12",
     "toolFragment/javascript/jstool13",
-    "toolFragment/javascript/jstool14"
+    "toolFragment/javascript/jstool14",
+    "toolFragment/javascript/jstool15"
   ],
   cssitems: [
     "toolFragment/css/csstool1",
