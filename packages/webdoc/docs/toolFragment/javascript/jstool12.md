@@ -91,6 +91,8 @@ const stopPropagation = (event) => {
 
 ## 深拷贝一个对象
 
+### 方法 1
+
 ```js
 const deepCopy = (obj, hash = new WeakMap()) => {
   if (obj instanceof Date) {
@@ -113,6 +115,24 @@ const deepCopy = (obj, hash = new WeakMap()) => {
     }
   }
   return cloneObj;
+};
+```
+
+### 方法 2
+
+```js
+const deepClone = (obj) => {
+  if (obj === null || typeof obj !== "object") return obj;
+  let clone = Array.isArray(obj) ? [] : {};
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      clone[key] =
+        obj[key] instanceof Date
+          ? new Date(obj[key].getTime())
+          : deepClone(obj[key]);
+    }
+  }
+  return clone;
 };
 ```
 
@@ -301,5 +321,53 @@ const formatMoney = (money) => {
 const formatMoney = (money) => {
   return money.toLocaleString();
 };
+```
+
+## 判断是否为函数
+
+```js
+const isFunction = (obj) => {
+  return (
+    typeof obj === "function" &&
+    typeof obj.nodeType !== "number" &&
+    typeof obj.item !== "function"
+  );
+};
+```
+
+## 过滤字符串中特殊字符
+
+### 方法
+
+```js
+function filterCharacter(str) {
+  let pattern = new RegExp(
+    "[`~!@#$^&*()=：”“'。，、？|{}':;'%,\\[\\].<>/?~！@#￥……&*（）&;—|{ }【】‘；]"
+  );
+  let resultStr = "";
+  for (let i = 0; i < str.length; i++) {
+    resultStr = resultStr + str.substr(i, 1).replace(pattern, "");
+  }
+  return resultStr;
+}
+```
+
+### Demo
+```jsx live noInline
+const Demo2 = () => {
+  function filterCharacter(str) {
+    let pattern = new RegExp(
+      "[`~!@#$^&*()=：”“'。，、？|{}':;'%,\\[\\].<>/?~！@#￥……&*（）&;—|{ }【】‘；]"
+    );
+    let resultStr = "";
+    for (let i = 0; i < str.length; i++) {
+      resultStr = resultStr + str.substr(i, 1).replace(pattern, "");
+    }
+    return resultStr;
+  }
+  return filterCharacter("gyaskjdhy12316789#$%^&!@#1=123,./[");
+};
+
+render(<Demo2 />);
 ```
 

@@ -1,0 +1,30 @@
+---
+title: 奇偶数判断
+---
+
+## 方法
+
+### isOddEven
+
+```js
+const isOddEven = (num) => (!!(num & 1) ? "odd" : "even");
+```
+
+## Demo
+
+```jsx live noInline
+const Demo = () => {
+  const isOddEven = (num) => (!!(num & 1) ? "odd" : "even");
+  const testNumber = [1, 4, 10, 100.1, 6, 9, 13];
+  return (
+    <>
+      {testNumber.map((item) => {
+        return <div>{isOddEven(item)}</div>;
+      })}
+    </>
+  );
+};
+
+render(<Demo />);
+```
+

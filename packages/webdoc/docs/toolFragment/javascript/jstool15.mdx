@@ -1,0 +1,19 @@
+---
+title: 切换浏览器tab时，修改Favicon图标
+---
+
+## 方法
+
+```js
+const favicon = document.querySelector('link[rel="icon"]');
+
+document.addEventListener("visibilitychange", () => {
+  const hidden = document.hidden;
+
+  favicon.setAttribute("href", `/favicon${hidden ? "-hidden" : ""}.ico`);
+});
+```
+
+:::tip
+首先，我们使用 querySelector()方法获取网站图标的实例。然后该 visibilitychange 事件用于检测选项卡的内容何时隐藏或可见。并基于此，我们可以操纵网站图标
+:::
