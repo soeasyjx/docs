@@ -27,6 +27,7 @@ module.exports = {
     "toolFragment/css/csstool1",
     "toolFragment/css/csstool2",
     "toolFragment/css/csstool3"
-  ]
+  ],
+  otheritems: ["toolFragment/other/other1"]
 };
 

@@ -90,7 +90,18 @@ module.exports = {
         title: "目录总览"
       },
       items: [...toolFragmentSidebar.cssitems]
-    }
+    },
+    {
+        type: "category",
+        label: "other",
+        collapsible: false,
+        collapsed: false,
+        link: {
+          type: "generated-index",
+          title: "目录总览"
+        },
+        items: [...toolFragmentSidebar.otheritems]
+      }
   ],
   //   nodeSidebar: ["node/aaa", "node/bbb"],
   //   microSidebar: [
