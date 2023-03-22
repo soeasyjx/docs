@@ -10,7 +10,8 @@ const microSidebar = require("./sidebars/microSidebar");
 const compileSidebar = require("./sidebars/compileSidebar");
 const graphicsSidebar = require("./sidebars/graphicsSidebar");
 const typescriptSidebar = require("./sidebars/typescriptSidebar");
-
+const nodeSidebar = require("./sidebars/nodeSidebar");
+console.log("nodeSidebar", nodeSidebar);
 module.exports = {
   baseSidebar: [
     // {
@@ -92,18 +93,31 @@ module.exports = {
       items: [...toolFragmentSidebar.cssitems]
     },
     {
-        type: "category",
-        label: "other",
-        collapsible: false,
-        collapsed: false,
-        link: {
-          type: "generated-index",
-          title: "目录总览"
-        },
-        items: [...toolFragmentSidebar.otheritems]
-      }
+      type: "category",
+      label: "other",
+      collapsible: false,
+      collapsed: false,
+      link: {
+        type: "generated-index",
+        title: "目录总览"
+      },
+      items: [...toolFragmentSidebar.otheritems]
+    }
   ],
-  //   nodeSidebar: ["node/aaa", "node/bbb"],
+  nodeSidebar: [
+    {
+      type: "category",
+      label: "基础",
+      collapsible: false,
+      collapsed: false,
+      link: {
+        type: "generated-index",
+        description: '记录node有关的知识点',
+        title: "目录总览"
+      },
+      items: nodeSidebar
+    }
+  ],
   //   microSidebar: [
   //     {
   //       id: "microMain",

@@ -1,0 +1,59 @@
+---
+title: 使用js创建并且下载文本文件
+---
+
+import { DownloadFile } from "@site/src/docsDemo/DownloadFile";
+
+## 前言
+前阵子在项目中，遇到一个需求，就是点击按钮下载文件 ，一般有两条解决路线：
+
+1:需要下载的文件放到服务器，通过`a`标签 [download](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/a)属性来进行下载
+2: 使用js来创建并下载文件，这也是我们今天要说内容
+
+## 方法
+话不多说，直接上代码，其实非常简单，只是用的比较少
+
+```js
+function saveTextAsFile(textToWrite, fileNameToSaveAs, fileType) {
+    let textFileAsBlob = new Blob([textToWrite], { type: fileType });
+    let downloadLink = document.createElement('a');
+    downloadLink.download = fileNameToSaveAs;
+    downloadLink.innerHTML = 'Download File';
+
+    if (window.webkitURL != null) {
+        downloadLink.href = window.webkitURL.createObjectURL(
+            textFileAsBlob
+        );
+    } else {
+        downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+        downloadLink.style.display = 'none';
+        document.body.appendChild(downloadLink);
+    }
+
+    downloadLink.click();
+}
+```
+
+代码非常简单，`saveTextAsFile`方法接收三个入参：  
+- textToWrite： 写入的文本
+- fileNameToSaveAs：文件名
+- fileType：文件类型
+
+通过[Blob](https://developer.mozilla.org/zh-CN/docs/Web/API/Blob/Blob)来生成一个文件对象，创建`a`标签并添加`download`，`href`属性
+其中`href`属性的值使用[createObjectURL](https://developer.mozilla.org/zh-CN/docs/Web/API/URL/createObjectURL)来生成，createObjectURL接收Blob实例为入参
+
+## 使用
+
+```javascript
+saveTextAsFile('Hello World!', 'hello.txt', 'text/plain');
+```
+
+```javascript
+saveTextAsFile('{"hello": "world"}', 'hello.json', 'application/json');
+```
+
+## demo
+
+<BrowserWindow>
+  <DownloadFile />
+</BrowserWindow>

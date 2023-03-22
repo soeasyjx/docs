@@ -293,6 +293,13 @@ pnpm --filter child-a run build
 pnpm -r run build
 ```
 
+### 查看所有工作空间包目录
+> 在根目录执行
+
+```bash
+pnpm list -r --depth=-1
+```
+
 **这里有一个问题，通过 pnpm publish 发布成功后，example 中的引用并没有自动修改成使用线上的包，还是引用的本地的包，还需要研究研究，看看是哪里的问题**
 
 ## 源码
