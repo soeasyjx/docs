@@ -32,7 +32,7 @@ const config = {
     locales: ["zh-CN"]
   },
   plugins: ["docusaurus-plugin-sass", "@docusaurus/theme-live-codeblock"],
-//   themes: ["@docusaurus/theme-search-algolia"],
+  //   themes: ["@docusaurus/theme-search-algolia"],
   presets: [
     [
       "classic",
@@ -90,7 +90,7 @@ const config = {
             label: "前端技术"
           },
           {
-            type:"doc",
+            type: "doc",
             docId: "compile/index",
             position: "left",
             label: "编译相关"
@@ -102,69 +102,74 @@ const config = {
             position: "left"
           },
           {
-            // type:"doc",
-            label:"组件",
-            href: 'http://easycli.cn:8890/doc/componentdoc/',
-            position: 'right',
+            type: "doc",
+            docId: "node/node1",
+            label: "node",
+            position: "left"
           },
           {
             // type:"doc",
-            label:"TS",
-            href: 'http://easycli.cn:8890/doc/typescriptdoc/category/%E7%AE%80%E4%BB%8B',
-            position: 'right',
-          },
-        //   {
-        //     type: "dropdown",
-        //     label: "前端大杂烩",
-        //     items: [
-        //       { href:"http://easycli.cn:8890/doc/typescriptdoc/category/%E7%AE%80%E4%BB%8B", label: "TypeScript" },
-        //     //   { to: "/node/aaa", label: "Node" },
-        //     //   { to: "/node/aaa", label: "svg/canvas" },
-        //       //   { type: "doc",docId: "compile/index", label: "打包编译" },
-        //       { to: "compile", label: "编译相关" },
-        //     //   {
-        //     //     type: "doc",
-        //     //     docId: "微前端/qiankun/entry",
-        //     //     label: "微前端"
-        //     //   }
-        //     ]
-        //   },
-           {
-            type: 'search',
-            position: 'right',
+            label: "组件",
+            href: "http://easycli.cn:8890/doc/componentdoc/",
+            position: "right"
           },
           {
-            href: 'https://github.com/soeasyjx/docs.git',
-            position: 'right',
-            className: 'header-github-link',
-            'aria-label': 'GitHub repository',
+            // type:"doc",
+            label: "TS",
+            href: "http://easycli.cn:8890/doc/typescriptdoc/category/%E7%AE%80%E4%BB%8B",
+            position: "right"
+          },
+          //   {
+          //     type: "dropdown",
+          //     label: "前端大杂烩",
+          //     items: [
+          //       { href:"http://easycli.cn:8890/doc/typescriptdoc/category/%E7%AE%80%E4%BB%8B", label: "TypeScript" },
+          //     //   { to: "/node/aaa", label: "Node" },
+          //     //   { to: "/node/aaa", label: "svg/canvas" },
+          //       //   { type: "doc",docId: "compile/index", label: "打包编译" },
+          //       { to: "compile", label: "编译相关" },
+          //     //   {
+          //     //     type: "doc",
+          //     //     docId: "微前端/qiankun/entry",
+          //     //     label: "微前端"
+          //     //   }
+          //     ]
+          //   },
+          {
+            type: "search",
+            position: "right"
+          },
+          {
+            href: "https://github.com/soeasyjx/docs.git",
+            position: "right",
+            className: "header-github-link",
+            "aria-label": "GitHub repository"
           }
         ]
       },
       //   autoCollapseSidebarCategories: true,
       algolia: {
         // Algolia 提供的应用 ID
-        appId: 'RJX07KU35V',
-  
+        appId: "RJX07KU35V",
+
         //  公开 API 密钥：提交它没有危险
-        apiKey: '56240d7fb5a3e6f9796c3749bffd535a',
-  
+        apiKey: "56240d7fb5a3e6f9796c3749bffd535a",
+
         // indexName: 'indexwebdoc',
-        indexName:'webdoc',
+        indexName: "webdoc",
         contextualSearch: true,
-  
+
         // // 可选：见下文
         // contextualSearch: true,
-  
+
         // // 可选：声明哪些域名需要用 window.location 型的导航而不是 history.push。 适用于 Algolia 配置会爬取多个文档站点，而我们想要用 window.location.href 在它们之间跳转时。
         // externalUrlRegex: 'external\\.com|domain\\.com',
-  
+
         // // 可选：Algolia 搜索参数
         // searchParameters: {},
-  
+
         // // 可选：搜索页面的路径，默认启用（可以用 `false` 禁用）
-        searchPagePath: 'search',
-  
+        searchPagePath: "search"
       },
       docs: {
         sidebar: {

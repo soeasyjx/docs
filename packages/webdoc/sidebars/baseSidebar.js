@@ -19,7 +19,8 @@ module.exports = {
     "javascript/graytest",
     "javascript/httpheader",
     // "javascript/usememocallback",
-    "javascript/apislow"
+    "javascript/apislow",
+    "javascript/downloadfile"
   ],
   css: [
     // "css/percentage",
@@ -47,7 +48,7 @@ module.exports = {
     "webother/webother12",
     "webother/webother13",
     "webother/webother14",
-    "webother/webother15"
+    "webother/webother15",
   ]
 };
 
