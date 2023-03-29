@@ -346,9 +346,21 @@ program.parse();
 上面的代码就不一一进行解释了
 
 ### 本地测试
-开发好之后，我们先需要进行本地测试
-1. npm install . -g  或者 npm link
+开发好之后，我们先需要进行本地测试  
+这里我们也简单的讲讲如何进行包的本地测试
+#### npm link
+1. npm install . -g  或者 npm link 【可以理解成将本地包安装到了全局，如果你开发的是一个非脚手架的包，则需要在本地项目中安装该包`npm add lib`】
 2. 在终端中执行命令 `chiyoucli create projectName`
+3. `npm unlink chiyoucli --global`
+
+#### pnpm link
+其实跟`npm link`一样
+1. pnpm link --global 通过执行`pnpm ls --global`可以查看到全局包中存在刚刚link的包
+2. 在终端中执行命令 `chiyoucli create projectName`
+3. 在本地其他项目中通过`pnpm link --global chiyoucli`即可将包，安装到node_modules中
+
+
+当我们在本地测试完成后，需要使用unlink移除链接到全局的包
 
 ## 发布
 1. npm login
