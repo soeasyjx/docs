@@ -4,5 +4,5 @@
  * @Company: orientsec.com.cn
  * @Description:
  */
-module.exports = ["node/node1"];
+module.exports = ["node/node1", "node/node2"];
 
