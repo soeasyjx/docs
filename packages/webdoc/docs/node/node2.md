@@ -158,3 +158,6 @@ $MyEnv
 ```
 
 现在我们需要在项目执行`version`命令脚本后，自动执行`start`命令，这个方案就很多了，如果你使用npm包管理工具，则可以利用其提供的[生命周期勾子](https://docs.npmjs.com/cli/v6/using-npm/scripts#pre--post-scripts)，也可以直接将`start`命令通过**&&**添加到`version`命令之后，如：`changeset version && npm run start`
+
+## 资料
+[17 个常用linux命令](https://javascript.plainenglish.io/useful-cli-17-commands-you-should-know-as-a-developer-afeb0a916fea#559b)
