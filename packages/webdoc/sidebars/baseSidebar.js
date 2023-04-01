@@ -32,7 +32,7 @@ module.exports = {
     "css/countdown",
     "css/lineheight"
   ],
-  html: ["html/picture", "html/template","html/safelybreak"],
+  html: ["html/picture", "html/template", "html/safelybreak", "html/form"],
   webother: [
     "webother/webother1",
     "webother/webother2",
@@ -48,7 +48,7 @@ module.exports = {
     "webother/webother12",
     "webother/webother13",
     "webother/webother14",
-    "webother/webother15",
+    "webother/webother15"
   ]
 };
 
