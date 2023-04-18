@@ -14,7 +14,7 @@ title: 预发布
 在说changeset预发布之前，我们使用npm其也可以进行预发布
 
 1. 如果项目是初始创建，则先手动在package.json中添加预发布版本号：  
-`1.0.0-beta.0`或者使用npm version prerelease --preid=beta(之后则可通过npm version [major|mijor|patch])，来迭代预发布版本号
+`1.0.0-beta.0`或者使用npm version prerelease --preid=beta(之后则可通过npm version [major|mijor|patch])，来迭代预发布版本号 ; **prerelease 可以修改成premajor | preminor | prepatch**
 2. 发布到npm上，打上tag，通过npm publish 发布到npm上，默认是有latest标签，如果是预发布版本需要添加--tag name （name可根据需要自定义），npm publish --tag beta
 3. 正式发布
 
