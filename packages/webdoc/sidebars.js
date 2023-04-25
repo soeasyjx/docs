@@ -94,7 +94,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "other",
+      label: "其它",
       collapsible: false,
       collapsed: false,
       link: {
