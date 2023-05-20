@@ -40,7 +40,8 @@ control+数字 **数字就是 1,2,3……**
 
 shift+command+f
 
-### 切换窗口或者工作空间
+### 切换窗口
+>当有多个vscode窗口被打开时
 
 control+w
 
@@ -55,4 +56,3 @@ command+p
 ## 参考
 
 [快捷键](https://blog.csdn.net/m0_37801862/article/details/127594312)
-
