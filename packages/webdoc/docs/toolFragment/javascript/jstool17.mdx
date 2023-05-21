@@ -1,0 +1,55 @@
+---
+title: object转URL查询参数
+---
+
+## 前言
+
+将一个对象序列化为一个 URL
+
+```js
+let url = "https://xxxx.com";
+const query = {
+  name: "fatfish",
+  age: 100
+};
+```
+
+```
+ https://xxxx.com?name=fatfish&age=100
+```
+
+## 方法
+
+### getSerializationURL
+
+```js showLineNumbers
+const getSerializationURL = (query) => {
+  return Object.entries(query)
+    .map(([key, value]) => `${key}=${value}`)
+    .join("&");
+};
+```
+
+## Demo
+
+```jsx live noInline
+const getSerializationURL = (query) => {
+  return Object.entries(query)
+    .map(([key, value]) => `${key}=${value}`)
+    .join("&");
+};
+
+function Demo(props) {
+  const query = {
+    name: "fatfish",
+    age: 100
+  };
+  return (
+    <div>
+      <h2>{getSerializationURL(query)}</h2>
+    </div>
+  );
+}
+render(<Demo/>)
+```
+
