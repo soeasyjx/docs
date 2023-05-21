@@ -1,0 +1,44 @@
+---
+title: 复制内容到剪贴板
+---
+
+## 方法
+
+```js
+const copyToClipboard = (content) => {
+  const textarea = document.createElement("textarea");
+
+  textarea.value = content;
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand("Copy");
+  textarea.remove();
+};
+```
+
+```jsx live noInline
+const copyToClipboard = (content) => {
+  const textarea = document.createElement("textarea");
+
+  textarea.value = content;
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand("Copy");
+  textarea.remove();
+};
+
+function Demo(props) {
+  return (
+    <button onClick={() => {
+        copyToClipboard("这是需要复制的内容");
+        alert('复制成功')
+    }}>
+      点击复制
+    </button>
+  );
+}
+render(<Demo />);
+```
+
+> 使用`command+V`或`Ctrl+V` 快捷键即可展示复制的内容
+
