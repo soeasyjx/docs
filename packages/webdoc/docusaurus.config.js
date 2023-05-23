@@ -32,20 +32,20 @@ const config = {
     locales: ["zh-CN"]
   },
   plugins: ["docusaurus-plugin-sass", "@docusaurus/theme-live-codeblock"],
-  themes: [
-    [
-      require.resolve("@easyops-cn/docusaurus-search-local"),
-      {
-        // ... Your options.
-        // `hashed` is recommended as long-term-cache of index file is possible.
-        hashed: true
-        // For Docs using Chinese, The `language` is recommended to set to:
-        // ```
-        // language: ["en", "zh"],
-        // ```
-      }
-    ]
-  ],
+//   themes: [
+//     [
+//       require.resolve("@easyops-cn/docusaurus-search-local"),
+//       {
+//         // ... Your options.
+//         // `hashed` is recommended as long-term-cache of index file is possible.
+//         hashed: true
+//         // For Docs using Chinese, The `language` is recommended to set to:
+//         // ```
+//         // language: ["en", "zh"],
+//         // ```
+//       }
+//     ]
+//   ],
   //   themes: ["@docusaurus/theme-search-algolia"],
   presets: [
     [
@@ -162,29 +162,29 @@ const config = {
         ]
       },
       //   autoCollapseSidebarCategories: true,
-      //   algolia: {
-      //     // Algolia 提供的应用 ID
-      //     appId: "RJX07KU35V",
+        algolia: {
+          // Algolia 提供的应用 ID
+          appId: "RJX07KU35V",
 
-      //     //  公开 API 密钥：提交它没有危险
-      //     apiKey: "56240d7fb5a3e6f9796c3749bffd535a",
+          //  公开 API 密钥：提交它没有危险
+          apiKey: "56240d7fb5a3e6f9796c3749bffd535a",
 
-      //     // indexName: 'indexwebdoc',
-      //     indexName: "webdoc",
-      //     contextualSearch: true,
+          // indexName: 'indexwebdoc',
+          indexName: "webdoc",
+          contextualSearch: true,
 
-      //     // // 可选：见下文
-      //     // contextualSearch: true,
+          // // 可选：见下文
+          // contextualSearch: true,
 
-      //     // // 可选：声明哪些域名需要用 window.location 型的导航而不是 history.push。 适用于 Algolia 配置会爬取多个文档站点，而我们想要用 window.location.href 在它们之间跳转时。
-      //     // externalUrlRegex: 'external\\.com|domain\\.com',
+          // // 可选：声明哪些域名需要用 window.location 型的导航而不是 history.push。 适用于 Algolia 配置会爬取多个文档站点，而我们想要用 window.location.href 在它们之间跳转时。
+          // externalUrlRegex: 'external\\.com|domain\\.com',
 
-      //     // // 可选：Algolia 搜索参数
-      //     // searchParameters: {},
+          // // 可选：Algolia 搜索参数
+          // searchParameters: {},
 
-      //     // // 可选：搜索页面的路径，默认启用（可以用 `false` 禁用）
-      //     searchPagePath: "search"
-      //   },
+          // // 可选：搜索页面的路径，默认启用（可以用 `false` 禁用）
+          searchPagePath: "search"
+        },
       docs: {
         sidebar: {
           autoCollapseCategories: true,
