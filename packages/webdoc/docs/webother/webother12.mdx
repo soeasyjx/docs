@@ -2,6 +2,9 @@
 title: node 环境变量设置
 ---
 
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
 ## 前言
 
 当我们在 node 环境运行脚本的时候，避免不了通过`process.env`获取命令参数或者说环境配置变量等信息，那么我们可以多以下几个方案进行选择
@@ -21,6 +24,7 @@ node 中可通过 process.env 来设置环境变量，我们也可以在命令�
 ```
 
 ### index0.js
+
 ```js
 const { env } = require("node:process");
 
@@ -28,6 +32,91 @@ console.log("process.env", env.AAFDFDFD);
 
 console.log("process.env", env.NODE_ENV);
 ```
+
+## [config](https://github.com/node-config/node-config) 推荐使用
+
+### 安装
+
+```bash
+pnpm add config
+```
+
+### 使用
+
+在项目根目录下创建`config`文件夹，根据需要在该文件夹下创建不同的的配置文件(在不同的环境下使用)，目录如下：
+
+```tree
+config_demo
+├── config
+│   ├── dev.json
+│   ├── mock.json
+│   └── prod.json
+├── index.js
+├── package.json
+└── pnpm-lock.yaml
+```
+
+其中**dev.json**，**mock.json**，**mock.json** 就是我们环境的配置文件，当然不仅仅可以使用 json，` .yml、.yaml、.xml、.coffee、.cson、.properties、.json、.json5、.hjson、.ts 或 .js`都是可以使用的配置格式
+
+<Tabs>
+
+<TabItem value='mock.json' label='mock.json'>
+
+```json
+{
+  "name": "mock"
+}
+```
+
+</TabItem>
+<TabItem value='dev.json' label='dev.json'>
+
+```json
+{
+  "name": "dev"
+}
+```
+
+</TabItem>
+<TabItem value='prod.json' label='prod.json'>
+
+```json
+{
+  "name": "prod"
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+```json {7} title=package.json
+{
+  "name": "config_demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "NODE_ENV=mock node index"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "config": "^3.3.9"
+  }
+}
+```
+
+通过`NODE_ENV`环境变量来指示 config 应该获取那个具体的配置文件
+
+```js title=index.js
+const config = require("config");
+
+const name = config.get("name");
+```
+
+> config 有比较多的功能，还有敏感数据的保密配置，与webpack配合使用等功能，具体可参考其官方文档
 
 ## [env-cmd](https://github.com/toddbluhm/env-cmd)
 
@@ -262,3 +351,4 @@ pnpm test1-dotenv
 [node-env](https://gitee.com/soeasyjx/node-env)
 
 以上四个环境变量配置库，按业务需要选择使用就行了，哪个简单使用哪个
+
