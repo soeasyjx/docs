@@ -7,7 +7,9 @@ toc: false
 
 [![chiyoucli](https://img.shields.io/npm/v/create-fastman2-app?color=%231890ff)](https://www.npmjs.com/package/create-fastman2-app) [![chiyoucli](https://img.shields.io/npm/dy/create-fastman2-app)](https://www.npmjs.com/package/create-fastman2-app)
 
-开始使用业务通过模板最简单的方法是使用`create-fastman2-app`。这个 CLI 工具使您能够快速开始创建新的业务办理应用程序，并为您设置好一切。要开始使用，请使用以下命令:
+开始使用业务通过模板最简单的方法是使用`create-fastman2-app`。这个 CLI 工具使您能够快速开始创建新的业务办理应用程序，并为您设置好一切。
+
+要开始使用，请使用以下命令:
 
 ### 使用
 
