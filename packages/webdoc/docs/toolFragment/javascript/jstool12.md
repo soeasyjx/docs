@@ -371,3 +371,8 @@ const Demo2 = () => {
 render(<Demo2 />);
 ```
 
+## 将float类型的数字转成整数
+
+```js
+console.log(23.56 | 0)
+```

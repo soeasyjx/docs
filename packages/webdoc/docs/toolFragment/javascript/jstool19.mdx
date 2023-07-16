@@ -1,0 +1,38 @@
+---
+title: 每隔 N 个字符分割一个字符串的多种方法
+---
+
+## 方法 1
+
+```js
+const separate = (str) => {
+  const str = str;
+  const result = str.match(/.{1,4}/g) ?? [];
+};
+```
+
+## 方法 2
+
+```js
+const separate = (str, N) => {
+  const arr = [];
+  for (let i = 0; i < str.length; i += N) {
+    arr.push(str.substring(i, i + N));
+  }
+  return arr;
+};
+```
+
+## 方法3
+```js
+const separate = (str, N) =>
+  [...str]
+    .reduce(
+      (substrings, ch) =>
+        (substrings.at(-1)?.length ?? N) < N
+          ? [...substrings.slice(0, -1), substrings.at(-1) + ch]
+          : [...substrings, ch],
+      []
+    );
+```
+
