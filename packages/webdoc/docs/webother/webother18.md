@@ -12,7 +12,7 @@ import Thumbnail from '@site/src/components/Thumbnail';
 
 在先本地目录中新建一个空文件夹，如: `source`
 
-依次点击【源代码】->【替换】->【选择放置替换项的文件夹】(这里选择刚刚创建的文件夹-source)，之后在【网页】tab找到你所需要修改的资源，修改完成保存，即可实现刷新页面不丢失修改内容的需求
+依次点击【1-源代码】->【2-替换】->【3-选择放置替换项的文件夹】(这里选择刚刚创建的文件夹-source)，之后在【4-网页】tab找到你所需要修改的资源，修改完成保存，即可实现刷新页面不丢失修改内容的需求
 
 <Thumbnail
   src='/myimage/webother18_2.png'
@@ -26,7 +26,7 @@ import Thumbnail from '@site/src/components/Thumbnail';
 
 ### 步聚
 
-依次点击【源代码】->【代码段】->【新代码段】,新建脚本：myscript，在其中编写脚本，点击运行按钮或快捷键`command+enter`运行当前脚本
+依次点击【1-源代码】->【2-代码段】->【3-新代码段】,新建脚本：myscript，在其中编写脚本，点击运行按钮或快捷键`command+enter`运行当前脚本
 
 <Thumbnail
   src='/myimage/webother18_1.png'
