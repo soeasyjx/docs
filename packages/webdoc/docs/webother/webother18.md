@@ -26,7 +26,7 @@ import Thumbnail from '@site/src/components/Thumbnail';
 
 ### 步聚
 
-依次点击【1-源代码】->【2-代码段】->【3-新代码段】,新建脚本：myscript，在其中编写脚本，点击运行按钮或快捷键`command+enter`运行当前脚本
+依次点击【1-源代码】->【2-代码段】->【3-新代码段】,新建脚本：4-myscript，5-在其中编写脚本，点击运行按钮或快捷键6-`command+enter`运行当前脚本
 
 <Thumbnail
   src='/myimage/webother18_1.png'
