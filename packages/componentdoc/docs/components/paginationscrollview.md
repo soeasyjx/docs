@@ -31,7 +31,7 @@ $ yarn add fastman3-component-paginationscrollview
 
 ### request
 
-`request` 是 `PaginationScrollView` 最重要的 API，request 会接收一个对象。对象中必须要有 `data`。 `params` 参数发生修改时重新执行。同时查询数据默认参数的值和 params 参数也会带入。以下是一个例子：
+`request` 是 `PaginationScrollView` 最重要的 API，request 会接收一个对象。对象中必须要有 `data`。 `params` 参数发生修改时重新执行。同时查询数据默认参数的值和 params 参数也会带入。以下是一个例子
 
 ```tsx | pure
     import React, { FC, useRef, useState } from "react";
