@@ -43,17 +43,17 @@ export const sourceCodeMap = {
                     {
                       agreementName: "测试协议1",
                       agreementUrl:
-                        "https://hlwres.dfzq.com.cn/protocols/_FILE/JZYY_FS/20210708/14592/11244/%E6%8A%95%E9%A1%BE%E6%9C%8D%E5%8A%A1%E5%8D%8F%E8%AE%AE.pdf"
+                        "https://test.easy.com.cn/protocols/_FILE/JZYY_FS/20210708/14592/11244/%E6%8A%95%E9%A1%BE%E6%9C%8D%E5%8A%A1%E5%8D%8F%E8%AE%AE.pdf"
                     },
                     {
                       agreementName: "测试协议2---",
                       agreementUrl:
-                        "https://hlwres.dfzq.com.cn/protocols/_FILE/JZYY_FS/20210708/14469/11082/%E4%B8%9C%E6%96%B9%E8%AF%81%E5%88%B8%E8%82%A1%E4%BB%BD%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%E5%85%AC%E5%BC%80%E5%8B%9F%E9%9B%86%E8%AF%81%E5%88%B8%E6%8A%95%E8%B5%84%E5%9F%BA%E9%87%91%E6%8A%95%E8%B5%84%E9%A1%BE%E9%97%AE%E4%B8%9A%E5%8A%A1%E9%A3%8E%E9%99%A9%E6%8F%AD%E7%A4%BA%E4%B9%A61--.pdf"
+                        "https://test.easy.com.cn/protocols/_FILE/JZYY_FS/20210708/14469/11082/%E4%B8%9C%E6%96%B9%E8%AF%81%E5%88%B8%E8%82%A1%E4%BB%BD%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%E5%85%AC%E5%BC%80%E5%8B%9F%E9%9B%86%E8%AF%81%E5%88%B8%E6%8A%95%E8%B5%84%E5%9F%BA%E9%87%91%E6%8A%95%E8%B5%84%E9%A1%BE%E9%97%AE%E4%B8%9A%E5%8A%A1%E9%A3%8E%E9%99%A9%E6%8F%AD%E7%A4%BA%E4%B9%A61--.pdf"
                     },
                     {
                       agreementName: "测试协议3",
                       agreementUrl:
-                        "https://hlwres.dfzq.com.cn/protocols/_FILE/JZYY_FS/20210708/14595/11247/%E6%8A%95%E9%A1%BE%E8%B5%84%E9%87%91%E7%89%B9%E5%88%AB%E6%8F%90%E7%A4%BA%E7%A1%AE%E8%AE%A4%E4%B9%A6.pdf"
+                        "https://test.easy.com.cn/protocols/_FILE/JZYY_FS/20210708/14595/11247/%E6%8A%95%E9%A1%BE%E8%B5%84%E9%87%91%E7%89%B9%E5%88%AB%E6%8F%90%E7%A4%BA%E7%A1%AE%E8%AE%A4%E4%B9%A6.pdf"
                     }
                   ]);
                 }, 200);
