@@ -13,7 +13,7 @@ import Thumbnail from '@site/src/components/Thumbnail';
 
 这是阿里的一套分支管理规则，我们公司也是基于该规则进行分支管理的
 
-三种分支类型：master分支、feature分支、release分支、hotfix分支
+三种分支类型：master分支、feature分支、release分支、hotfix分支;
 
 master分支：主分支，该分支是永远一直存在，且不能直接在该分支要修改提交，从预分布分支合并到master分支需要打到标签(tag),以便快速回退到之前某个版本
 
