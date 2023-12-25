@@ -20,7 +20,8 @@ module.exports = {
     "javascript/httpheader",
     // "javascript/usememocallback",
     "javascript/apislow",
-    "javascript/downloadfile"
+    "javascript/downloadfile",
+    "javascript/freeze_seal"
   ],
   css: [
     // "css/percentage",

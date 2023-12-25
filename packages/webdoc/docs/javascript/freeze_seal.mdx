@@ -1,0 +1,15 @@
+---
+title: Object 中freeze跟seal的区别
+---
+
+## 前言
+`freeze`和`seal`都是用来冻结对象操作的，那他们之间有什么区别么，当然有区别，不然干嘛弄两个方法出来
+
+## 区别
+
+### `Object.freeze` vs `Object.seal`
+
+|   |CREATE|READ|UPDATE|DELETE|
+|---|:---:|:---:|:---:|:---:|
+|`Object.freeze`| ✗ | ✓ | ✗ | ✗ |
+|`Object.seal`| ✗ | ✓ | ✓ | ✗ |
