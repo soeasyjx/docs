@@ -16,7 +16,7 @@ const config = {
   tagline: "Dinosaurs are cool",
   url: "https://your-docusaurus-test-site.com",
     // baseUrl: "/",
-  baseUrl: "/doc/webdoc/",
+  baseUrl: "/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "throw",
   favicon: "img/favicon.ico",
