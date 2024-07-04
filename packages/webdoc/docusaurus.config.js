@@ -124,13 +124,13 @@ const config = {
           {
             // type:"doc",
             label: "组件",
-            href: "http://easycli.cn/doc/componentdoc/",
+            href: "http://easycli.cn/componentdoc/",
             position: "right"
           },
           {
             // type:"doc",
             label: "TS",
-            href: "http://easycli.cn/doc/typescriptdoc/category/%E7%AE%80%E4%BB%8B",
+            href: "http://easycli.cn/typescriptdoc/category/%E7%AE%80%E4%BB%8B",
             position: "right"
           },
           //   {

@@ -10,7 +10,7 @@ const config = {
   tagline: "Dinosaurs are cool",
   url: "https://your-docusaurus-test-site.com",
   //   baseUrl:'/typescriptdoc/',
-  baseUrl: "/doc/typescriptdoc/",
+  baseUrl: "/typescriptdoc/",
   onBrokenLinks: "ignore",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.ico",

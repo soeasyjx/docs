@@ -8,8 +8,8 @@ import { defineConfig } from 'dumi';
 
 export default defineConfig({
   mfsu: false,
-  base: '/doc/componentdoc/',
-  publicPath: '/doc/componentdoc/',
+  base: '/componentdoc/',
+  publicPath: '/componentdoc/',
   outputPath:'build',
 //   styles: [
 //     `
