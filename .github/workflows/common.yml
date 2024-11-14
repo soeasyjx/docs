@@ -15,12 +15,12 @@ on:
         required: true    
 jobs:
   install-npm:
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2204
     steps:
       - name: checkout_actions
         uses: actions/checkout@v3
       - name: 初始化node环境
-        uses: actions/setup-node@v3
+        uses: useblacksmith/setup-node@v5
         with:
           node-version: "16"
       - run: |
@@ -58,7 +58,7 @@ jobs:
           path: ${{github.workspace}}/packages/${{ inputs.docname }}/build/
           retention-days: 1
   publish-server:
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2204
     needs: install-npm
     steps:
       - name: 下载${{inputs.docname}}文档
