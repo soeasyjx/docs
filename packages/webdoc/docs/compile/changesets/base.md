@@ -11,7 +11,7 @@ import Thumbnail from "@site/src/components/Thumbnail";
 1. 手动修改维护版本号，即自己在 package.json->verison 中进行修改
 2. [npm verison](https://docs.npmjs.com/cli/v8/commands/npm-version)
 3. [changesets](https://github.com/changesets/changesets)
-4. [release-it](https://github.com/release-it/release-it)(这个目前还没有使用过,github上评分也很高)
+4. [release-it](https://github.com/release-it/release-it)(这个目前还没有使用过,github上评分也很高.)
 
 第三种方案`changesets` 是我主要想介绍的方案
 
